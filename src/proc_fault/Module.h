@@ -2,10 +2,12 @@
 #define PROC_FAULT_MODULE_H
 
 #include <vector>
+#include <thread>
+#include <mutex>
 
 #include "SoftwareInterface.h"
 
-namespace procFault
+namespace proc_fault
 {
     class Module 
     {
@@ -15,7 +17,7 @@ namespace procFault
                 softwareInterfaceArray = _softwareInterfaceArray;
                 moduleName = _moduleName;
 
-                monitorThreadRunning = true;
+                monitoringThreadRunning = true;
                 monitoringResult = true;
                 monitorThread = std::thread(std::bind(&Module::monitoringThreadCallback, this));
             }
@@ -24,7 +26,7 @@ namespace procFault
             {
                 std::unique_lock<std::mutex> mlock(ArraysMutex);
 
-                monitorThreadRunning = false;
+                monitoringThreadRunning = false;
                 for(SoftwareInterface* soft : softwareInterfaceArray)
                 {
                     delete soft;
@@ -35,16 +37,16 @@ namespace procFault
 
             void monitoringThreadCallback()
             {
-                ROS_INFO("MODULE: %s Started \n", moduleName);
+                ROS_INFO("MODULE: %s Started \n", moduleName.c_str());
                 // wait for the module startup
                 ros::Duration(60).sleep();
-                ROS_INFO("MODULE: %s is Currently monitoring \n", moduleName);
+                ROS_INFO("MODULE: %s is Currently monitoring \n", moduleName.c_str());
 
-                while(monitorThreadRunning)
+                while(monitoringThreadRunning)
                 {
                     //sleep 1 sec
                     ros::Duration(1).sleep();
-                    self.monitor();
+                    this->monitor();
                 }
             }
 

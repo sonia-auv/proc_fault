@@ -1,13 +1,18 @@
 #ifndef PROC_FAULT_SOFTWARE_INTERFACE_H
 #define PROC_FAULT_SOFTWARE_INTERFACE_H
 
-namespace procFault
+namespace proc_fault
 {
     class SoftwareInterface 
     {
         public:
-            virtual bool detection();
-            virtual bool correction();
+            virtual ~SoftwareInterface()
+            {
+
+            }
+            
+            virtual bool detection() = 0;
+            virtual bool correction() = 0;
     };
 }
 

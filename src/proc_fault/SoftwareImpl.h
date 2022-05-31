@@ -1,21 +1,25 @@
 #ifndef PROC_FAULT_SOFTWARE_IMPLEMENTATION_H
 #define PROC_FAULT_SOFTWARE_IMPLEMENTATION_H
 
+#include <sensor_msgs/Imu.h>
+#include <sonia_common/BodyVelocityDVL.h>
+#include <std_msgs/Float32.h>
+
 #include <ros/ros.h>
 #include <chrono>
 
 #include "SoftwareInterface.h"
 
-namespace procFault
+namespace proc_fault
 {
     // ------------------- Common function ------------------
 
     class CommonSoftware
     {
         public:
-            const unsigned int depthTimestampsMs = 1000; 
-            const unsigned int dvlTimestampsMs = 1000;
-            const unsigned int imuTimestampsMs = 1000;
+            static const unsigned int depthTimestampsMs = 1000; 
+            static const unsigned int dvlTimestampsMs = 1000;
+            static const unsigned int imuTimestampsMs = 1000;
 
             static std::chrono::milliseconds getCurrentTimeMs()
             {
@@ -24,7 +28,7 @@ namespace procFault
 
             static bool timeDetectionAlgorithm(std::chrono::milliseconds lastTimestamp, unsigned int MaxMs)
             {
-                if((CommonSoftware::getCurrentTimeMs() - timestamp).count() > CommonSoftware::depthTimestampsMs)
+                if((CommonSoftware::getCurrentTimeMs() - lastTimestamp).count() > MaxMs)
                 {
                     return false;
                 }
@@ -34,13 +38,13 @@ namespace procFault
 
             static void restartContainer(std::string containerName)
             {
-                system("docker restart" + containerName);
+                //system("docker restart" + containerName);
             }
     };
 
     // -------------- Software Implementation ---------------
 /*
-    class providerVisionSoftware: SoftwareInterface
+    class providerVisionSoftware: public SoftwareInterface
     {
         public:
             const providerVisionMs = 1000;
@@ -68,7 +72,7 @@ namespace procFault
 
     };
 
-    class procImageProcessingSoftware: SoftwareInterface
+    class procImageProcessingSoftware: public SoftwareInterface
     {
         public:
             bool Detection()
@@ -83,7 +87,7 @@ namespace procFault
     };
 */
 
-    class ProcControl: SoftwareInterface
+    class ProcControl: public SoftwareInterface
     {
         public:
             bool detection()
@@ -97,16 +101,21 @@ namespace procFault
             }
     };
 
-    class ProviderImu: SoftwareInterface
+    class ProviderImu: public SoftwareInterface
     {
         public:
 
-            ProviderDvl()
+            ProviderImu()
             {
-                depthSubscriber = ros::NodeHandle("~").subscribe("/provider_imu/imu_info", 10, &ProviderImu::callbackImu, this);
+                imuSubscriber = ros::NodeHandle("~").subscribe("/provider_imu/imu_info", 10, &ProviderImu::callbackImu, this);
             }
 
-            void callbackImu(const sensor_msgs::Imu &receivedData)
+            ~ProviderImu()
+            {
+                
+            }
+
+            void callbackImu(const sensor_msgs::Imu::ConstPtr &receivedData)
             {
                 timestamp = CommonSoftware::getCurrentTimeMs();
             }
@@ -126,16 +135,16 @@ namespace procFault
             std::chrono::milliseconds timestamp;
     };
 
-    class ProviderDvl: SoftwareInterface
+    class ProviderDvl: public SoftwareInterface
     {
         public:
 
             ProviderDvl()
             {
-                depthSubscriber = ros::NodeHandle("~").subscribe("/provider_dvl/dvl_velocity", 10, &ProviderDvl::callbackDvl, this);
+                dvlSubscriber = ros::NodeHandle("~").subscribe("/provider_dvl/dvl_velocity", 10, &ProviderDvl::callbackDvl, this);
             }
 
-            void callbackDvl(const sonia_common::BodyVelocityDVL &receivedData)
+            void callbackDvl(const sonia_common::BodyVelocityDVL::ConstPtr &receivedData)
             {
                 timestamp = CommonSoftware::getCurrentTimeMs();
             }
@@ -151,11 +160,11 @@ namespace procFault
             }
         
         private:
-            ros::Subscriber depthSubscriber;
+            ros::Subscriber dvlSubscriber;
             std::chrono::milliseconds timestamp;
     };
 
-    class ProviderDepth: SoftwareInterface
+    class ProviderDepth: public SoftwareInterface
     {
         public:
             ProviderDepth()

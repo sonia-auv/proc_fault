@@ -7,15 +7,15 @@
 
 namespace proc_fault
 {
-    ProcFaultNode::ProcFaultNode()
+    ProcFaultNode::ProcFaultNode(const ros::NodeHandlePtr &_nh)
     {
-        std::vector<SorftwareInterface> controlSoftwareInterface;
+        std::vector<SoftwareInterface*> controlSoftwareInterface;
 
         controlSoftwareInterface.push_back(new ProviderImu());
         
-        Module controlModule = new Module("Control", controlSoftwareInterface);
+        Module* controlModule = new Module("Control", controlSoftwareInterface);
 
-        procFaultModule.push_back(controlModule)
+        procFaultModule.push_back(controlModule);
     }
 
     ProcFaultNode::~ProcFaultNode()
@@ -31,7 +31,7 @@ namespace proc_fault
 
     void ProcFaultNode::spin()
     {
-        bool test = controlModule->checkMonitoring();
+        bool test = procFaultModule[0]->checkMonitoring();
         ROS_INFO("spin happened with the boolean %d\n", test);
     }
 }

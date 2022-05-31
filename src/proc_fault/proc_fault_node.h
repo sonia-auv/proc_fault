@@ -2,8 +2,6 @@
 #define PROC_FAULT_NODE_H
 
 #include <ros/ros.h>
-
-#include "Configuration.h"
 #include "Module.h"
 
 namespace proc_fault
@@ -18,8 +16,8 @@ namespace proc_fault
             void spin();
 
         private:
-            std::vector<Module*> procFaultModule
-    }
+            std::vector<Module*> procFaultModule;
+    };
 }
 
 #endif
