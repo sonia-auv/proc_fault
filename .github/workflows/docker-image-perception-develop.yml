@@ -15,7 +15,7 @@ jobs:
       ARCH: x86
       TARGET_TYPE: perception
       TARGET_VERSION: develop
-      IMAGE_NAME: <ENTER_YOUR_MODULE_NAME>
+      IMAGE_NAME: proc_fault
       GITHUB_REMOTE_URL: docker.pkg.github.com/${{ github.repository }}
     steps:
       - uses: actions/checkout@v2
@@ -47,7 +47,7 @@ jobs:
       ARCH: arm64
       TARGET_TYPE: perception
       TARGET_VERSION: develop
-      IMAGE_NAME: <ENTER_YOUR_MODULE_NAME>
+      IMAGE_NAME: proc_fault
       GITHUB_REMOTE_URL: docker.pkg.github.com/${{ github.repository }}
     steps:
       - uses: actions/checkout@v2
