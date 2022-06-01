@@ -36,7 +36,7 @@ USER ${SONIA_USER}
 
 RUN mkdir ${SCRIPT_DIR}
 RUN cat $ENTRYPOINT_ABSPATH > ${SCRIPT_DIR}/entrypoint.sh
-RUN echo "roslaunch --wait $LAUNCH_ABSPATH" > ${SCRIPT_DIR}/launch.sh
+RUN echo "roslaunch $LAUNCH_ABSPATH" > ${SCRIPT_DIR}/launch.sh
 
 RUN chmod +x ${SCRIPT_DIR}/entrypoint.sh && chmod +x ${SCRIPT_DIR}/launch.sh
 

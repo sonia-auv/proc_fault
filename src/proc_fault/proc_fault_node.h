@@ -17,6 +17,7 @@ namespace proc_fault
 
         private:
             std::vector<Module*> procFaultModule;
+            ros::Publisher faultPublisher;
     };
 }
 

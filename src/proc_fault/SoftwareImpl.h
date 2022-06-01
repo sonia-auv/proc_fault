@@ -28,7 +28,8 @@ namespace proc_fault
 
             static bool timeDetectionAlgorithm(std::chrono::milliseconds lastTimestamp, unsigned int MaxMs)
             {
-                if((CommonSoftware::getCurrentTimeMs() - lastTimestamp).count() > MaxMs)
+                unsigned int diffTimestamp = (CommonSoftware::getCurrentTimeMs() - lastTimestamp).count();
+                if(diffTimestamp > MaxMs)
                 {
                     return false;
                 }

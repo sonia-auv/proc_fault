@@ -1,0 +1,3 @@
+<launch>
+	<node name="proc_fault" pkg="proc_fault" type="proc_fault_node" output="screen" launch-prefix="gdb -ex run --args" />
+</launch>
