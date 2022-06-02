@@ -53,11 +53,13 @@ namespace proc_fault
             void monitor()
             {
                 // check every detection
+                bool tempMonitoring = true;
                 std::unique_lock<std::mutex> mlock(ArraysMutex);
                 for(SoftwareInterface* soft : softwareInterfaceArray)
                 {
-                    monitoringResult &= soft->detection();
+                    tempMonitoring &= soft->detection();
                 }
+                monitoringResult = tempMonitoring;
             }
 
             bool checkMonitoring()
