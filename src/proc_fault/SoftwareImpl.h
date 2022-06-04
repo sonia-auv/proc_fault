@@ -4,6 +4,7 @@
 #include <sensor_msgs/Imu.h>
 #include <sonia_common/BodyVelocityDVL.h>
 #include <std_msgs/Float32.h>
+#include <std_msgs/UInt16MultiArray.h>
 
 #include <ros/ros.h>
 #include <chrono>
@@ -20,6 +21,7 @@ namespace proc_fault
             static const unsigned int depthTimestampsMs = 1000; 
             static const unsigned int dvlTimestampsMs = 1000;
             static const unsigned int imuTimestampsMs = 1000;
+            static const unsigned int controlTimestampsMs = 1000;
 
             static std::chrono::milliseconds getCurrentTimeMs()
             {
@@ -91,15 +93,28 @@ namespace proc_fault
     class ProcControl: public SoftwareInterface
     {
         public:
+            ProcControl()
+            {
+                controlSubscriber = ros::NodeHandle("~").subscribe("/provider_thruster/thruster_pwm", 10, &ProvcControl::callbackControl, this);
+            }
+
+            void callbackControl(const std_msgs::UInt16MultiArray &receivedData)
+            {
+                timestamp = CommonSoftware::getCurrentTimeMs();
+            }
+
             bool detection()
             {
-
+                return CommonSoftware::timeDetectionAlgorithm(timestamp, CommonSoftware::controlTimestampsMs);
             }
 
             bool correction()
             {
 
             }
+        private:
+            ros::Subscriber controlSubscriber;
+            std::chrono::milliseconds timestamp;
     };
 
     class ProviderImu: public SoftwareInterface
@@ -109,11 +124,6 @@ namespace proc_fault
             ProviderImu()
             {
                 imuSubscriber = ros::NodeHandle("~").subscribe("/provider_imu/imu_info", 10, &ProviderImu::callbackImu, this);
-            }
-
-            ~ProviderImu()
-            {
-                
             }
 
             void callbackImu(const sensor_msgs::Imu::ConstPtr &receivedData)

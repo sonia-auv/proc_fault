@@ -9,17 +9,24 @@
 
 namespace proc_fault
 {
-    ProcFaultNode::ProcFaultNode(const ros::NodeHandlePtr &_nh)
+    ProcFaultNode::InitNavigation()
     {
-        faultPublisher = _nh->advertise<sonia_common::FaultDetection>("/proc_fault/fault_detection", 10, true);
-
         std::vector<SoftwareInterface*> navigationSoftwareInterface;
 
+        navigationSoftwareInterface.push_back(new ProcControl());
         navigationSoftwareInterface.push_back(new ProviderImu());
+        navigationSoftwareInterface.push_back(new ProviderDvl());
+        navigationSoftwareInterface.push_back(new ProviderDepth());
         
         Module* navigationModule = new Module("Navigation", navigationSoftwareInterface);
 
         procFaultModule.push_back(navigationModule);
+    }
+
+    ProcFaultNode::ProcFaultNode(const ros::NodeHandlePtr &_nh)
+    {
+        faultPublisher = _nh->advertise<sonia_common::FaultDetection>("/proc_fault/fault_detection", 10, true);
+        InitNavigation();   
     }
 
     ProcFaultNode::~ProcFaultNode()
