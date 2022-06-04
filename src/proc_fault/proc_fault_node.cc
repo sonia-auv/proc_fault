@@ -9,24 +9,10 @@
 
 namespace proc_fault
 {
-    ProcFaultNode::InitNavigation()
-    {
-        std::vector<SoftwareInterface*> navigationSoftwareInterface;
-
-        navigationSoftwareInterface.push_back(new ProcControl());
-        navigationSoftwareInterface.push_back(new ProviderImu());
-        navigationSoftwareInterface.push_back(new ProviderDvl());
-        navigationSoftwareInterface.push_back(new ProviderDepth());
-        
-        Module* navigationModule = new Module("Navigation", navigationSoftwareInterface);
-
-        procFaultModule.push_back(navigationModule);
-    }
-
     ProcFaultNode::ProcFaultNode(const ros::NodeHandlePtr &_nh)
     {
         faultPublisher = _nh->advertise<sonia_common::FaultDetection>("/proc_fault/fault_detection", 10, true);
-        InitNavigation();   
+        initNavigation();   
     }
 
     ProcFaultNode::~ProcFaultNode()
@@ -40,9 +26,38 @@ namespace proc_fault
 
     }
 
+    void ProcFaultNode::initNavigation()
+    {
+        std::vector<SoftwareInterface*> navigationSoftwareInterface;
+
+        if(Configuration::getInstance()->controlEnable)
+        {
+            navigationSoftwareInterface.push_back(new ProcControl());
+        }
+        
+        if(Configuration::getInstance()->imuEnable)
+        {
+            navigationSoftwareInterface.push_back(new ProviderImu());
+        }
+        
+        if(Configuration::getInstance()->dvlEnable)
+        {
+            navigationSoftwareInterface.push_back(new ProviderDvl());
+        }
+        
+        if(Configuration::getInstance()->dvlEnable)
+        {
+            navigationSoftwareInterface.push_back(new ProviderDepth());
+        }
+        
+        Module* navigationModule = new Module("Navigation", navigationSoftwareInterface);
+
+        procFaultModule.push_back(navigationModule);
+    }
+
     void ProcFaultNode::spin()
     {
-         ros::Rate r(20);
+        ros::Rate r(20);
         while(ros::ok())
         {
             ros::spinOnce();

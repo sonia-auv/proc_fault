@@ -10,6 +10,7 @@
 #include <chrono>
 
 #include "SoftwareInterface.h"
+#include "Configuration.h"
 
 namespace proc_fault
 {
@@ -18,11 +19,6 @@ namespace proc_fault
     class CommonSoftware
     {
         public:
-            static const unsigned int depthTimestampsMs = 1000; 
-            static const unsigned int dvlTimestampsMs = 1000;
-            static const unsigned int imuTimestampsMs = 1000;
-            static const unsigned int controlTimestampsMs = 1000;
-
             static std::chrono::milliseconds getCurrentTimeMs()
             {
                 return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
@@ -95,7 +91,7 @@ namespace proc_fault
         public:
             ProcControl()
             {
-                controlSubscriber = ros::NodeHandle("~").subscribe("/provider_thruster/thruster_pwm", 10, &ProvcControl::callbackControl, this);
+                controlSubscriber = ros::NodeHandle("~").subscribe("/provider_thruster/thruster_pwm", 10, &ProcControl::callbackControl, this);
             }
 
             void callbackControl(const std_msgs::UInt16MultiArray &receivedData)
@@ -105,7 +101,7 @@ namespace proc_fault
 
             bool detection()
             {
-                return CommonSoftware::timeDetectionAlgorithm(timestamp, CommonSoftware::controlTimestampsMs);
+                return CommonSoftware::timeDetectionAlgorithm(timestamp, Configuration::getInstance()->controlTimestampsMs);
             }
 
             bool correction()
@@ -133,7 +129,7 @@ namespace proc_fault
 
             bool detection()
             {
-                return CommonSoftware::timeDetectionAlgorithm(timestamp, CommonSoftware::imuTimestampsMs);
+                return CommonSoftware::timeDetectionAlgorithm(timestamp, Configuration::getInstance()->imuTimestampsMs);
             }
 
             bool correction()
@@ -162,7 +158,7 @@ namespace proc_fault
         
             bool detection()
             {
-                return CommonSoftware::timeDetectionAlgorithm(timestamp, CommonSoftware::dvlTimestampsMs);
+                return CommonSoftware::timeDetectionAlgorithm(timestamp, Configuration::getInstance()->dvlTimestampsMs);
             }
 
             bool correction()
@@ -190,7 +186,7 @@ namespace proc_fault
 
             bool detection()
             {
-                return CommonSoftware::timeDetectionAlgorithm(timestamp, CommonSoftware::depthTimestampsMs);
+                return CommonSoftware::timeDetectionAlgorithm(timestamp, Configuration::getInstance()->depthTimestampsMs);
             }
 
             bool correction()
