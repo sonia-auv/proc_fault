@@ -16,6 +16,7 @@ namespace proc_fault
             void spin();
 
         private:
+            void initNavigation();
             std::vector<Module*> procFaultModule;
             ros::Publisher faultPublisher;
     };

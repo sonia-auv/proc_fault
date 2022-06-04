@@ -4,11 +4,13 @@
 #include <sensor_msgs/Imu.h>
 #include <sonia_common/BodyVelocityDVL.h>
 #include <std_msgs/Float32.h>
+#include <std_msgs/UInt16MultiArray.h>
 
 #include <ros/ros.h>
 #include <chrono>
 
 #include "SoftwareInterface.h"
+#include "Configuration.h"
 
 namespace proc_fault
 {
@@ -17,10 +19,6 @@ namespace proc_fault
     class CommonSoftware
     {
         public:
-            static const unsigned int depthTimestampsMs = 1000; 
-            static const unsigned int dvlTimestampsMs = 1000;
-            static const unsigned int imuTimestampsMs = 1000;
-
             static std::chrono::milliseconds getCurrentTimeMs()
             {
                 return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
@@ -91,15 +89,28 @@ namespace proc_fault
     class ProcControl: public SoftwareInterface
     {
         public:
+            ProcControl()
+            {
+                controlSubscriber = ros::NodeHandle("~").subscribe("/provider_thruster/thruster_pwm", 10, &ProcControl::callbackControl, this);
+            }
+
+            void callbackControl(const std_msgs::UInt16MultiArray &receivedData)
+            {
+                timestamp = CommonSoftware::getCurrentTimeMs();
+            }
+
             bool detection()
             {
-
+                return CommonSoftware::timeDetectionAlgorithm(timestamp, Configuration::getInstance()->controlTimestampsMs);
             }
 
             bool correction()
             {
 
             }
+        private:
+            ros::Subscriber controlSubscriber;
+            std::chrono::milliseconds timestamp;
     };
 
     class ProviderImu: public SoftwareInterface
@@ -111,11 +122,6 @@ namespace proc_fault
                 imuSubscriber = ros::NodeHandle("~").subscribe("/provider_imu/imu_info", 10, &ProviderImu::callbackImu, this);
             }
 
-            ~ProviderImu()
-            {
-                
-            }
-
             void callbackImu(const sensor_msgs::Imu::ConstPtr &receivedData)
             {
                 timestamp = CommonSoftware::getCurrentTimeMs();
@@ -123,7 +129,7 @@ namespace proc_fault
 
             bool detection()
             {
-                return CommonSoftware::timeDetectionAlgorithm(timestamp, CommonSoftware::imuTimestampsMs);
+                return CommonSoftware::timeDetectionAlgorithm(timestamp, Configuration::getInstance()->imuTimestampsMs);
             }
 
             bool correction()
@@ -152,7 +158,7 @@ namespace proc_fault
         
             bool detection()
             {
-                return CommonSoftware::timeDetectionAlgorithm(timestamp, CommonSoftware::dvlTimestampsMs);
+                return CommonSoftware::timeDetectionAlgorithm(timestamp, Configuration::getInstance()->dvlTimestampsMs);
             }
 
             bool correction()
@@ -180,7 +186,7 @@ namespace proc_fault
 
             bool detection()
             {
-                return CommonSoftware::timeDetectionAlgorithm(timestamp, CommonSoftware::depthTimestampsMs);
+                return CommonSoftware::timeDetectionAlgorithm(timestamp, Configuration::getInstance()->depthTimestampsMs);
             }
 
             bool correction()

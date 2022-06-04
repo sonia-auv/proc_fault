@@ -1,0 +1,13 @@
+﻿/proc_fault/navigation/dvl/timestamp_ms: 1000
+/proc_fault/navigation/dvl/enable: true
+
+/proc_fault/navigation/depth/timestamp_ms: 1000
+/proc_fault/navigation/depth/enable: true
+
+/proc_fault/navigation/imu/timestamp_ms: 1000
+/proc_fault/navigation/imu/enable: true
+
+/proc_fault/navigation/control/timestamp_ms: 1000
+/proc_fault/navigation/control/enable: true
+
+/proc_fault/initial_node_sleep_second: 30

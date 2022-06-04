@@ -6,6 +6,7 @@
 #include <mutex>
 
 #include "SoftwareInterface.h"
+#include "Configuration.h"
 
 namespace proc_fault
 {
@@ -39,7 +40,7 @@ namespace proc_fault
             {
                 ROS_INFO("MODULE: %s Started \n", moduleName.c_str());
                 // wait for the module startup
-                ros::Duration(60).sleep();
+                ros::Duration(Configuration::getInstance()->initialNodeSleepSecond).sleep();
                 ROS_INFO("MODULE: %s is Currently monitoring \n", moduleName.c_str());
 
                 while(monitoringThreadRunning)
