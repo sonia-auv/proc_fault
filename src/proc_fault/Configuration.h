@@ -37,6 +37,9 @@ namespace proc_fault
         int controlTimestampsMs = 1000;
         bool controlEnable = true;
 
+        int cameraTimestampsMs = 1000;
+        bool cameraEnable = true;
+
         int initialNodeSleepSecond = 30;
 
     private:

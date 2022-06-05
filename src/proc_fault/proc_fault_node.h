@@ -17,6 +17,13 @@ namespace proc_fault
 
         private:
             void initNavigation();
+            void initVision();
+            void initMapping();
+            void initHydro();
+            void initIo();
+            void initUnderwaterCom();
+            void initPower();
+            void initInternalCom();
             std::vector<Module*> procFaultModule;
             ros::Publisher faultPublisher;
     };

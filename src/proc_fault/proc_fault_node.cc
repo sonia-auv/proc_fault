@@ -49,10 +49,50 @@ namespace proc_fault
         {
             navigationSoftwareInterface.push_back(new ProviderDepth());
         }
-        
-        Module* navigationModule = new Module("Navigation", navigationSoftwareInterface);
 
-        procFaultModule.push_back(navigationModule);
+        procFaultModule.push_back(new Module("Navigation", navigationSoftwareInterface));
+    }
+
+    void ProcFaultNode::initVision()
+    {
+        std::vector<SoftwareInterface*> visionSoftwareInterface;
+
+        if(Configuration::getInstance()->cameraEnable)
+        {
+            visionSoftwareInterface.push_back(new ProviderVision());
+        }
+
+        procFaultModule.push_back(new Module("Vision", visionSoftwareInterface));
+    }
+
+    void ProcFaultNode::initMapping()
+    {
+
+    }
+
+    void ProcFaultNode::initHydro()
+    {
+        
+    }
+
+    void ProcFaultNode::initIo()
+    {
+        
+    }
+
+    void ProcFaultNode::initUnderwaterCom()
+    {
+        
+    }
+
+    void ProcFaultNode::initPower()
+    {
+        
+    }
+
+    void ProcFaultNode::initInternalCom()
+    {
+        
     }
 
     void ProcFaultNode::spin()

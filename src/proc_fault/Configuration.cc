@@ -28,6 +28,9 @@ namespace proc_fault
         FindParameter("/navigation/control/timestamp_ms", controlTimestampsMs);
         FindParameter("/navigation/control/enable", controlEnable);
 
+        FindParameter("/vision/camera/timestamp_ms", cameraTimestampsMs);
+        FindParameter("/vision/camera/enable", cameraEnable);
+
         FindParameter("/initial_node_sleep_second", initialNodeSleepSecond);
 
         ROS_INFO("End deserialize params");

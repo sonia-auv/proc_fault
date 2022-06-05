@@ -10,4 +10,7 @@
 /proc_fault/navigation/control/timestamp_ms: 1000
 /proc_fault/navigation/control/enable: true
 
+/proc_fault/vision/camera/timestamp_ms: 1000
+/proc_fault/vision/camera/enable: true
+
 /proc_fault/initial_node_sleep_second: 30

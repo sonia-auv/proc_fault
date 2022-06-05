@@ -2,6 +2,7 @@
 #define PROC_FAULT_SOFTWARE_IMPLEMENTATION_H
 
 #include <sensor_msgs/Imu.h>
+#include <sensor_msgs/Image.h>
 #include <sonia_common/BodyVelocityDVL.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/UInt16MultiArray.h>
@@ -42,26 +43,36 @@ namespace proc_fault
     };
 
     // -------------- Software Implementation ---------------
-/*
-    class providerVisionSoftware: public SoftwareInterface
+
+    class ProviderVision: public SoftwareInterface
     {
         public:
-            const providerVisionMs = 1000;
-
-            providerVisionSoftware()
+            providerVision()
             {
-                provider_vision_front_topic = ros::NodeHandle("~").subscribe("/camera_array", 100, &DeepFilter::callbackBoundingBox, this);
-                provider_vision_bottom_topic = ros::NodeHandle("~").subscribe("/camera_array", 100, &DeepFilter::callbackBoundingBox, this);
+                provider_vision_front_topic = ros::NodeHandle("~").subscribe("/camera_array/image_raw/front", 10, &ProviderVision::frontCallback, this);
+                provider_vision_bottom_topic = ros::NodeHandle("~").subscribe("/camera_array/image_raw/bottom", 10, &ProviderVision::bottomCallback, this);
+            }
+
+            void frontCallback(const sensor_msgs::Image &receivedData)
+            {
+                topTimestamp = CommonSoftware::getCurrentTimeMs();
+            }
+
+            void bottomCallback(const sensor_msgs::Image &receivedData)
+            {
+                bottomTimestamp = CommonSoftware::getCurrentTimeMs();
             }
             
             bool Detection()
             {
-
+                bool topTest = CommonSoftware::timeDetectionAlgorithm(topTimestamp, Configuration::getInstance()->cameraTimestampsMs);
+                bool bottomTest = CommonSoftware::timeDetectionAlgorithm(bottomTimestamp, Configuration::getInstance()->cameraTimestampsMs);
+                return topTest || bottomTest;
             }
 
             bool Correction()
             {
-
+                
             }
         
         private:
@@ -69,11 +80,19 @@ namespace proc_fault
         image_transport::Subscriber provider_vision_front_topic;
         image_transport::Subscriber provider_vision_bottom_topic;
 
+        std::chrono::milliseconds topTimestamp;
+        std::chrono::milliseconds bottomTimestamp;
     };
 
-    class procImageProcessingSoftware: public SoftwareInterface
+/*
+    class ProcImageProcessingSoftware: public SoftwareInterface
     {
         public:
+            ProcImageProcessingSoftware()
+            {
+
+            }
+
             bool Detection()
             {
 
@@ -84,7 +103,7 @@ namespace proc_fault
 
             }
     };
-*/
+    */
 
     class ProcControl: public SoftwareInterface
     {
