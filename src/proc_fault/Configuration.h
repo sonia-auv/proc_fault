@@ -40,7 +40,23 @@ namespace proc_fault
         int cameraTimestampsMs = 1000;
         bool cameraEnable = true;
 
+        int sonarTimestampsMs = 1000;
+        bool sonarEnable = true;
+
+        int providerHydroTimestampsMs = 1000;
+        bool providerHydroEnable = true;
+
+        int procHydroTimestampsMs = 1000;
+        bool procHydroEnable = true;
+
+        int powerTimestampsMs = 1000;
+        bool powerEnable = true;
+
+        int interfaceTimestampsMs = 1000;
+        bool interfaceEnable = true;
+
         int initialNodeSleepSecond = 30;
+        int loopSleepTimeSecond = 1;
 
     private:
 

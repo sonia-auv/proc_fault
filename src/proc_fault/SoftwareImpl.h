@@ -3,9 +3,14 @@
 
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/Image.h>
-#include <sonia_common/BodyVelocityDVL.h>
 #include <std_msgs/Float32.h>
+#include <std_msgs/Float64MultiArray.h>
 #include <std_msgs/UInt16MultiArray.h>
+
+#include <sonia_common/SendRS485Msg.h>
+#include <sonia_common/BodyVelocityDVL.h>
+#include <sonia_common/PointCloud2Extended.h>
+#include <sonia_common/PingMsg.h>
 
 #include <ros/ros.h>
 #include <chrono>
@@ -44,10 +49,155 @@ namespace proc_fault
 
     // -------------- Software Implementation ---------------
 
+    class InterfaceRs485: public SoftwareInterface
+    {
+        public:
+            InterfaceRs485()
+            {
+                tx_topic = ros::NodeHandle("~").subscribe("/interface_rs485/dataTx", 10, &InterfaceRs485::interfaceCallback, this);
+            }
+
+            void interfaceCallback(const sonia_common::SendRS485Msg &receivedData)
+            {
+                timestamp = CommonSoftware::getCurrentTimeMs();
+            }
+            
+            bool detection()
+            {
+                return CommonSoftware::timeDetectionAlgorithm(timestamp, Configuration::getInstance()->interfaceTimestampsMs);
+            }
+
+            bool correction()
+            {
+                return true;
+            }
+        
+        private:
+
+        ros::Subscriber tx_topic;
+        std::chrono::milliseconds timestamp;
+    };
+
+    class ProviderPower: public SoftwareInterface
+    {
+        public:
+            ProviderPower()
+            {
+                provider_power_topic = ros::NodeHandle("~").subscribe("/provider_power/voltage", 10, &ProviderPower::powerCallback, this);
+            }
+
+            void powerCallback(const std_msgs::Float64MultiArray &receivedData)
+            {
+                timestamp = CommonSoftware::getCurrentTimeMs();
+            }
+            
+            bool detection()
+            {
+                return CommonSoftware::timeDetectionAlgorithm(timestamp, Configuration::getInstance()->powerTimestampsMs);
+            }
+
+            bool correction()
+            {
+                return true;
+            }
+        
+        private:
+
+        ros::Subscriber provider_power_topic;
+        std::chrono::milliseconds timestamp;
+    };
+
+    class ProcHydrophone: public SoftwareInterface
+    {
+        public:
+            ProcHydrophone()
+            {
+                proc_hydro_topic = ros::NodeHandle("~").subscribe("/proc_hydrophone/ping", 10, &ProcHydrophone::hydroCallback, this);
+            }
+
+            void hydroCallback(const sonia_common::PingMsg &receivedData)
+            {
+                timestamp = CommonSoftware::getCurrentTimeMs();
+            }
+            
+            bool detection()
+            {
+                return CommonSoftware::timeDetectionAlgorithm(timestamp, Configuration::getInstance()->procHydroTimestampsMs);
+            }
+
+            bool correction()
+            {
+                return true;
+            }
+        
+        private:
+
+        ros::Subscriber proc_hydro_topic;
+        std::chrono::milliseconds timestamp;
+    };
+
+    class ProviderHydrophone: public SoftwareInterface
+    {
+        public:
+            ProviderHydrophone()
+            {
+                provider_hydro_topic = ros::NodeHandle("~").subscribe("/provider_hydrophone/ping", 10, &ProviderHydrophone::hydroCallback, this);
+            }
+
+            void hydroCallback(const sonia_common::PingMsg &receivedData)
+            {
+                timestamp = CommonSoftware::getCurrentTimeMs();
+            }
+            
+            bool detection()
+            {
+                return CommonSoftware::timeDetectionAlgorithm(timestamp, Configuration::getInstance()->providerHydroTimestampsMs);
+            }
+
+            bool correction()
+            {
+                return true;
+            }
+        
+        private:
+
+        ros::Subscriber provider_hydro_topic;
+        std::chrono::milliseconds timestamp;
+    };
+
+    class ProviderSonar: public SoftwareInterface
+    {
+        public:
+            ProviderSonar()
+            {
+                provider_sonar_topic = ros::NodeHandle("~").subscribe("/provider_sonar/point_cloud2_extended", 10, &ProviderSonar::sonarCallback, this);
+            }
+
+            void sonarCallback(const sonia_common::PointCloud2Extended &receivedData)
+            {
+                timestamp = CommonSoftware::getCurrentTimeMs();
+            }
+            
+            bool detection()
+            {
+                return CommonSoftware::timeDetectionAlgorithm(timestamp, Configuration::getInstance()->sonarTimestampsMs);
+            }
+
+            bool correction()
+            {
+                return true;
+            }
+        
+        private:
+
+        ros::Subscriber provider_sonar_topic;
+        std::chrono::milliseconds timestamp;
+    };
+
     class ProviderVision: public SoftwareInterface
     {
         public:
-            providerVision()
+            ProviderVision()
             {
                 provider_vision_front_topic = ros::NodeHandle("~").subscribe("/camera_array/image_raw/front", 10, &ProviderVision::frontCallback, this);
                 provider_vision_bottom_topic = ros::NodeHandle("~").subscribe("/camera_array/image_raw/bottom", 10, &ProviderVision::bottomCallback, this);
@@ -63,22 +213,22 @@ namespace proc_fault
                 bottomTimestamp = CommonSoftware::getCurrentTimeMs();
             }
             
-            bool Detection()
+            bool detection()
             {
                 bool topTest = CommonSoftware::timeDetectionAlgorithm(topTimestamp, Configuration::getInstance()->cameraTimestampsMs);
                 bool bottomTest = CommonSoftware::timeDetectionAlgorithm(bottomTimestamp, Configuration::getInstance()->cameraTimestampsMs);
                 return topTest || bottomTest;
             }
 
-            bool Correction()
+            bool correction()
             {
-                
+                return true;
             }
         
         private:
 
-        image_transport::Subscriber provider_vision_front_topic;
-        image_transport::Subscriber provider_vision_bottom_topic;
+        ros::Subscriber provider_vision_front_topic;
+        ros::Subscriber provider_vision_bottom_topic;
 
         std::chrono::milliseconds topTimestamp;
         std::chrono::milliseconds bottomTimestamp;
@@ -93,12 +243,12 @@ namespace proc_fault
 
             }
 
-            bool Detection()
+            bool detection()
             {
 
             }
 
-            bool Correction()
+            bool correction()
             {
 
             }
@@ -125,7 +275,7 @@ namespace proc_fault
 
             bool correction()
             {
-
+                return true;
             }
         private:
             ros::Subscriber controlSubscriber;
@@ -153,7 +303,7 @@ namespace proc_fault
 
             bool correction()
             {
-                
+                return true;
             }
 
         private:
@@ -182,7 +332,7 @@ namespace proc_fault
 
             bool correction()
             {
-
+                return true;
             }
         
         private:
@@ -210,7 +360,7 @@ namespace proc_fault
 
             bool correction()
             {
-
+                return true;
             }
 
         private:

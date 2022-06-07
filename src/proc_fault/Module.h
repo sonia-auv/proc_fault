@@ -46,7 +46,7 @@ namespace proc_fault
                 while(monitoringThreadRunning)
                 {
                     //sleep 1 sec
-                    ros::Duration(1).sleep();
+                    ros::Duration(Configuration::getInstance()->loopSleepTimeSecond).sleep();
                     this->monitor();
                 }
             }

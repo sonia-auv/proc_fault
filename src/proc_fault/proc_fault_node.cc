@@ -12,7 +12,14 @@ namespace proc_fault
     ProcFaultNode::ProcFaultNode(const ros::NodeHandlePtr &_nh)
     {
         faultPublisher = _nh->advertise<sonia_common::FaultDetection>("/proc_fault/fault_detection", 10, true);
-        initNavigation();   
+        initNavigation();
+        initVision();
+        initMapping();
+        initHydro();
+        initIo();
+        initUnderwaterCom();
+        initPower();
+        initInternalCom();
     }
 
     ProcFaultNode::~ProcFaultNode()
@@ -67,32 +74,73 @@ namespace proc_fault
 
     void ProcFaultNode::initMapping()
     {
+        std::vector<SoftwareInterface*> mappingSoftwareInterface;
 
+        if(Configuration::getInstance()->sonarEnable)
+        {
+            mappingSoftwareInterface.push_back(new ProviderSonar());
+        }
+
+        procFaultModule.push_back(new Module("Mapping", mappingSoftwareInterface));
     }
 
     void ProcFaultNode::initHydro()
     {
-        
+        std::vector<SoftwareInterface*> hydroSoftwareInterface;
+
+        if(Configuration::getInstance()->providerHydroEnable)
+        {
+            hydroSoftwareInterface.push_back(new ProviderHydrophone());
+        }
+
+        if(Configuration::getInstance()->procHydroEnable)
+        {
+            hydroSoftwareInterface.push_back(new ProcHydrophone());
+        }
+
+        procFaultModule.push_back(new Module("Hydro", hydroSoftwareInterface));
     }
 
     void ProcFaultNode::initIo()
     {
-        
+        std::vector<SoftwareInterface*> ioSoftwareInterface;
+
+
+
+        procFaultModule.push_back(new Module("Io", ioSoftwareInterface));
     }
 
     void ProcFaultNode::initUnderwaterCom()
     {
+        std::vector<SoftwareInterface*> underwaterComSoftwareInterface;
+
+
         
+        procFaultModule.push_back(new Module("Underwater Com", underwaterComSoftwareInterface));
     }
 
     void ProcFaultNode::initPower()
     {
+        std::vector<SoftwareInterface*> powerSoftwareInterface;
+
+        if(Configuration::getInstance()->powerEnable)
+        {
+            powerSoftwareInterface.push_back(new ProviderPower());
+        }
         
+        procFaultModule.push_back(new Module("Power", powerSoftwareInterface));
     }
 
     void ProcFaultNode::initInternalCom()
     {
+        std::vector<SoftwareInterface*> internalComSoftwareInterface;
+
+        if(Configuration::getInstance()->interfaceEnable)
+        {
+            internalComSoftwareInterface.push_back(new InterfaceRs485());
+        }
         
+        procFaultModule.push_back(new Module("Internal Com", internalComSoftwareInterface));
     }
 
     void ProcFaultNode::spin()
@@ -104,6 +152,12 @@ namespace proc_fault
 
             sonia_common::FaultDetection msg;
             msg.navigation = procFaultModule[0]->checkMonitoring();
+            msg.vision = procFaultModule[1]->checkMonitoring();
+            msg.mapping = procFaultModule[2]->checkMonitoring();
+            msg.io = procFaultModule[3]->checkMonitoring();
+            msg.underwater_com = procFaultModule[4]->checkMonitoring();
+            msg.power = procFaultModule[5]->checkMonitoring();
+            msg.internal_com = procFaultModule[6]->checkMonitoring();
 
             faultPublisher.publish(msg);
 

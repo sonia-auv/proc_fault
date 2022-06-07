@@ -31,7 +31,23 @@ namespace proc_fault
         FindParameter("/vision/camera/timestamp_ms", cameraTimestampsMs);
         FindParameter("/vision/camera/enable", cameraEnable);
 
+        FindParameter("/mapping/sonar/timestamp_ms", cameraTimestampsMs);
+        FindParameter("/mapping/sonar/enable", cameraEnable);
+
+        FindParameter("/hydro/providerHydro/timestamp_ms", providerHydroTimestampsMs);
+        FindParameter("/hydro/providerHydro/enable", providerHydroEnable);
+
+        FindParameter("/hydro/procHydro/timestamp_ms", procHydroTimestampsMs);
+        FindParameter("/hydro/procHydro/enable", procHydroEnable);
+
+        FindParameter("/power/providerPower/timestamp_ms", powerTimestampsMs);
+        FindParameter("/power/providerPower/enable", powerEnable);
+
+        FindParameter("/internal_com/rs485/timestamp_ms", interfaceTimestampsMs);
+        FindParameter("/internal_com/rs485/enable", interfaceEnable);
+
         FindParameter("/initial_node_sleep_second", initialNodeSleepSecond);
+        FindParameter("/loop_sleep_time_second", loopSleepTimeSecond);
 
         ROS_INFO("End deserialize params");
     }
