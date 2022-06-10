@@ -42,6 +42,8 @@ namespace proc_fault
 
         bool procImageProcessingEnable = true;
 
+        bool procDetectionEnable = true;
+
         int sonarTimestampsMs = 1000;
         bool sonarEnable = true;
 
@@ -60,6 +62,14 @@ namespace proc_fault
         int mappingTimestampsMs = 1000;
         bool mappingEnable = true;
 
+        bool providerActuatorEnable = true;
+
+        bool procActuatorEnable = true;
+
+        bool providerUnderwaterComEnable = true;
+
+        bool providerThrusterEnable = true;
+
         int initialNodeSleepSecond = 30;
         int loopSleepTimeSecond = 1;
 
@@ -75,7 +85,6 @@ namespace proc_fault
 
         template <typename TType>
         void FindParameter(const std::string &paramName, TType &attribute);
-
 
         };
 }

@@ -3,31 +3,31 @@
 ## Detection
 
 ### navigation
-- [x] provider_depth
-- [x] proc_control
-- [x] provider_dvl
-- [x] provider_imu
+- [x] provider_depth (message detection)
+- [x] proc_control (message detection)
+- [x] provider_dvl (message detection)
+- [x] provider_imu (message detection)
 ### vision
-- [x] provider_vision
-- [x] proc_image_processing (problematic)
-- [ ] deep_detector (problematic)
+- [x] provider_vision (message detection)
+- [x] proc_image_processing (service detection)
+- [x] deep_detector (service detection)
 ### mapping
-- [ ] proc_mapping
-- [x] provider_sonar
+- [ ] proc_mapping (service detection) (Alex le modifie)
+- [x] provider_sonar (message detection)
 ### hydro
-- [x] provider_hydrophone
-- [x] proc_hydrophone
+- [x] provider_hydrophone (message detection)
+- [x] proc_hydrophone (message detection)
 ### io
-- [ ] provider_actuators (problematic)
-- [ ] proc_actuators (problematic)
+- [x] provider_actuators (service detection)
+- [x] proc_actuators (service detection)
 ### underwater_com:
-- [ ] provider_com (problematic)
-- [ ] proc_com (problematic)
+- [x] provider_com (service detection)
+- [ ] proc_com (service detection) (attente de maturité)
 ### power
-- [x] provider_power
-- [ ] provider_thruster (problematic)
+- [x] provider_power (message detection)
+- [x] provider_thruster (service detection)
 ### internal_com
-- [x] interface_rs485
+- [x] interface_rs485 (message detection)
 
 ## Correction
 
@@ -57,6 +57,3 @@
 - [ ] provider_thruster
 ### internal_com
 - [ ] interface_rs485
-
-
-

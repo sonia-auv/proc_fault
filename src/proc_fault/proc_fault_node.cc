@@ -74,6 +74,11 @@ namespace proc_fault
             visionSoftwareInterface.push_back(new ProcImageProcessing());
         }
 
+        if(Configuration::getInstance()->procDetectionEnable)
+        {
+            visionSoftwareInterface.push_back(new ProcDetection());
+        }
+
         procFaultModule.push_back(new Module("Vision", visionSoftwareInterface));
     }
 
@@ -115,7 +120,15 @@ namespace proc_fault
     {
         std::vector<SoftwareInterface*> ioSoftwareInterface;
 
+        if(Configuration::getInstance()->providerActuatorEnable)
+        {
+            ioSoftwareInterface.push_back(new ProviderActuator());
+        }
 
+        if(Configuration::getInstance()->procActuatorEnable)
+        {
+            ioSoftwareInterface.push_back(new ProcActuator());
+        }
 
         procFaultModule.push_back(new Module("Io", ioSoftwareInterface));
     }
@@ -124,7 +137,10 @@ namespace proc_fault
     {
         std::vector<SoftwareInterface*> underwaterComSoftwareInterface;
 
-
+        if(Configuration::getInstance()->providerUnderwaterComEnable)
+        {
+            underwaterComSoftwareInterface.push_back(new ProviderCom());
+        }
         
         procFaultModule.push_back(new Module("Underwater Com", underwaterComSoftwareInterface));
     }
@@ -136,6 +152,11 @@ namespace proc_fault
         if(Configuration::getInstance()->powerEnable)
         {
             powerSoftwareInterface.push_back(new ProviderPower());
+        }
+
+        if(Configuration::getInstance()->providerThrusterEnable)
+        {
+            powerSoftwareInterface.push_back(new ProviderThruster());
         }
         
         procFaultModule.push_back(new Module("Power", powerSoftwareInterface));
@@ -155,7 +176,7 @@ namespace proc_fault
 
     void ProcFaultNode::spin()
     {
-        ros::Rate r(20);
+        ros::Rate r(5);
         while(ros::ok())
         {
             ros::spinOnce();

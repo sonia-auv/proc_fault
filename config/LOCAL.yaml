@@ -15,6 +15,8 @@
 
 /proc_fault/vision/proc_image_processing/enable: true
 
+/proc_fault/vision/proc_detection/enable: true
+
 /proc_fault/mapping/sonar/timestamp_ms: 1000
 /proc_fault/mapping/sonar/enable: true
 
@@ -30,8 +32,16 @@
 /proc_fault/power/providerPower/timestamp_ms: 1000
 /proc_fault/power/providerPower/enable: true
 
+/proc_fault/power/providerThruster/enable: true
+
 /proc_fault/internal_com/rs485/timestamp_ms: 1000
 /proc_fault/internal_com/rs485/enable: true
+
+/proc_fault/io/provider_actuator/enable: true
+
+/proc_fault/io/proc_actuator/enable: true
+
+/proc_fault/under_water_com/providerCom/enable: true
 
 /proc_fault/initial_node_sleep_second: 30
 /proc_fault/loop_sleep_time_second: 1

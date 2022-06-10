@@ -33,6 +33,8 @@ namespace proc_fault
 
         FindParameter("/vision/proc_image_processing/enable", procImageProcessingEnable);
 
+        FindParameter("/vision/proc_detection/enable", procDetectionEnable);
+
         FindParameter("/mapping/sonar/timestamp_ms", cameraTimestampsMs);
         FindParameter("/mapping/sonar/enable", cameraEnable);
 
@@ -45,8 +47,16 @@ namespace proc_fault
         FindParameter("/hydro/procHydro/timestamp_ms", procHydroTimestampsMs);
         FindParameter("/hydro/procHydro/enable", procHydroEnable);
 
+        FindParameter("/io/providerActuator/enable", providerActuatorEnable);
+        
+        FindParameter("/io/procActuator/enable", procActuatorEnable);
+
+        FindParameter("/under_water_com/providerCom/enable", providerUnderwaterComEnable);
+
         FindParameter("/power/providerPower/timestamp_ms", powerTimestampsMs);
         FindParameter("/power/providerPower/enable", powerEnable);
+
+        FindParameter("/power/providerThruster/enable", providerThrusterEnable);
 
         FindParameter("/internal_com/rs485/timestamp_ms", interfaceTimestampsMs);
         FindParameter("/internal_com/rs485/enable", interfaceEnable);

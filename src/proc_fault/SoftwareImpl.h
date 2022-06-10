@@ -7,13 +7,17 @@
 #include <std_msgs/Float64MultiArray.h>
 #include <std_msgs/UInt16MultiArray.h>
 
+#include <std_srvs/Empty.h>
+
 #include <sonia_common/SendRS485Msg.h>
 #include <sonia_common/BodyVelocityDVL.h>
 #include <sonia_common/PointCloud2Extended.h>
 #include <sonia_common/PingMsg.h>
 
-//#include <sonia_common/PingerLocationService.h>
 #include <sonia_common/GetInformationList.h>
+#include <sonia_common/ChangeNetwork.h>
+#include <sonia_common/ActuatorDoActionSrv.h>
+#include <sonia_common/ModemSendCmd.h>
 
 #include <ros/ros.h>
 #include <chrono>
@@ -52,6 +56,116 @@ namespace proc_fault
 
     // -------------- Software Implementation ---------------
 
+    class ProviderCom : public SoftwareInterface
+    {
+        public:
+            ProviderCom()
+            {
+                service = ros::NodeHandle("~").serviceClient<sonia_common::ModemSendCmd>("/provider_underwater_com/request");
+            }
+
+            bool detection()
+            {
+                return service.exists();
+            }
+
+            bool correction()
+            {
+                return true;
+            }
+
+        private:
+            ros::ServiceClient service;
+    };
+
+    class ProviderThruster : public SoftwareInterface
+    {
+        public:
+            ProviderThruster()
+            {
+                service = ros::NodeHandle("~").serviceClient<std_srvs::Empty>("/provider_thruster/dry_test");
+            }
+
+            bool detection()
+            {
+                return service.exists();
+            }
+
+            bool correction()
+            {
+                return true;
+            }
+
+        private:
+            ros::ServiceClient service;
+    };
+
+    class ProcActuator : public SoftwareInterface
+    {
+        public:
+            ProcActuator()
+            {
+                service = ros::NodeHandle("~").serviceClient<sonia_common::ActuatorDoActionSrv>("/proc_actuators/cm_action_srv");
+            }
+
+            bool detection()
+            {
+                return service.exists();
+            }
+
+            bool correction()
+            {
+                return true;
+            }
+
+        private:
+            ros::ServiceClient service;
+    };
+
+    class ProviderActuator : public SoftwareInterface
+    {
+        public:
+            ProviderActuator()
+            {
+                service = ros::NodeHandle("~").serviceClient<sonia_common::ActuatorDoActionSrv>("/provider_actuators/do_action_srv");
+            }
+
+            bool detection()
+            {
+                return service.exists();
+            }
+
+            bool correction()
+            {
+                return true;
+            }
+
+        private:
+            ros::ServiceClient service;
+    };
+
+    class ProcDetection : public SoftwareInterface
+    {
+        public:
+            ProcDetection()
+            {
+                service = ros::NodeHandle("~").serviceClient<sonia_common::ChangeNetwork>("/proc_detection/change_network");
+            }
+
+            bool detection()
+            {
+                return service.exists();
+            }
+
+            bool correction()
+            {
+                return true;
+            }
+
+        private:
+            ros::ServiceClient service;
+    };
+
     class ProcImageProcessing : public SoftwareInterface
     {
         public:
@@ -72,7 +186,6 @@ namespace proc_fault
 
         private:
             ros::ServiceClient service;
-            std::chrono::milliseconds timestamp;
     };
 
 /*
