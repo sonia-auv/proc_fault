@@ -31,8 +31,13 @@ namespace proc_fault
         FindParameter("/vision/camera/timestamp_ms", cameraTimestampsMs);
         FindParameter("/vision/camera/enable", cameraEnable);
 
+        FindParameter("/vision/proc_image_processing/enable", procImageProcessingEnable);
+
         FindParameter("/mapping/sonar/timestamp_ms", cameraTimestampsMs);
         FindParameter("/mapping/sonar/enable", cameraEnable);
+
+        FindParameter("/mapping/procMapping/timestamp_ms", mappingTimestampsMs);
+        FindParameter("/mapping/procMapping/enable", mappingEnable);
 
         FindParameter("/hydro/providerHydro/timestamp_ms", providerHydroTimestampsMs);
         FindParameter("/hydro/providerHydro/enable", providerHydroEnable);

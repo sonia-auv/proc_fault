@@ -52,7 +52,7 @@ namespace proc_fault
             navigationSoftwareInterface.push_back(new ProviderDvl());
         }
         
-        if(Configuration::getInstance()->dvlEnable)
+        if(Configuration::getInstance()->depthEnable)
         {
             navigationSoftwareInterface.push_back(new ProviderDepth());
         }
@@ -69,6 +69,11 @@ namespace proc_fault
             visionSoftwareInterface.push_back(new ProviderVision());
         }
 
+        if(Configuration::getInstance()->procImageProcessingEnable)
+        {
+            visionSoftwareInterface.push_back(new ProcImageProcessing());
+        }
+
         procFaultModule.push_back(new Module("Vision", visionSoftwareInterface));
     }
 
@@ -79,6 +84,11 @@ namespace proc_fault
         if(Configuration::getInstance()->sonarEnable)
         {
             mappingSoftwareInterface.push_back(new ProviderSonar());
+        }
+
+        if(Configuration::getInstance()->mappingEnable)
+        {
+            //mappingSoftwareInterface.push_back(new ProcMapping());
         }
 
         procFaultModule.push_back(new Module("Mapping", mappingSoftwareInterface));

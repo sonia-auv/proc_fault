@@ -40,6 +40,8 @@ namespace proc_fault
         int cameraTimestampsMs = 1000;
         bool cameraEnable = true;
 
+        bool procImageProcessingEnable = true;
+
         int sonarTimestampsMs = 1000;
         bool sonarEnable = true;
 
@@ -54,6 +56,9 @@ namespace proc_fault
 
         int interfaceTimestampsMs = 1000;
         bool interfaceEnable = true;
+
+        int mappingTimestampsMs = 1000;
+        bool mappingEnable = true;
 
         int initialNodeSleepSecond = 30;
         int loopSleepTimeSecond = 1;

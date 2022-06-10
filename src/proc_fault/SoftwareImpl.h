@@ -12,6 +12,9 @@
 #include <sonia_common/PointCloud2Extended.h>
 #include <sonia_common/PingMsg.h>
 
+//#include <sonia_common/PingerLocationService.h>
+#include <sonia_common/GetInformationList.h>
+
 #include <ros/ros.h>
 #include <chrono>
 
@@ -49,6 +52,54 @@ namespace proc_fault
 
     // -------------- Software Implementation ---------------
 
+    class ProcImageProcessing : public SoftwareInterface
+    {
+        public:
+            ProcImageProcessing()
+            {
+                service = ros::NodeHandle("~").serviceClient<sonia_common::GetInformationList>("/proc_image_processing/get_information_list");
+            }
+
+            bool detection()
+            {
+                return service.exists();
+            }
+
+            bool correction()
+            {
+                return true;
+            }
+
+        private:
+            ros::ServiceClient service;
+            std::chrono::milliseconds timestamp;
+    };
+
+/*
+    class ProcMapping: public SoftwareInterface
+    {
+        public:
+            ProcMapping()
+            {
+                service = ros::NodeHandle("~").serviceClient<sonia_common::PingerLocationService>("/proc_mapping/pinger_location_service");
+            }
+            
+            bool detection()
+            {
+                return service.exists();
+            }
+
+            bool correction()
+            {
+                return true;
+            }
+        
+        private:
+
+        ros::ServiceClient service;
+        std::chrono::milliseconds timestamp;
+    };
+*/
     class InterfaceRs485: public SoftwareInterface
     {
         public:

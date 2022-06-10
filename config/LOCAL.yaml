@@ -13,8 +13,13 @@
 /proc_fault/vision/camera/timestamp_ms: 1000
 /proc_fault/vision/camera/enable: true
 
+/proc_fault/vision/proc_image_processing/enable: true
+
 /proc_fault/mapping/sonar/timestamp_ms: 1000
 /proc_fault/mapping/sonar/enable: true
+
+/proc_fault/mapping/procMapping/timestamp_ms: 1000
+/proc_fault/mapping/procMapping/enable: true
 
 /proc_fault/hydro/providerHydro/timestamp_ms: 1000
 /proc_fault/hydro/providerHydro/enable: true

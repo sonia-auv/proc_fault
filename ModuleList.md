@@ -9,10 +9,10 @@
 - [x] provider_imu
 ### vision
 - [x] provider_vision
-- [ ] proc_image_processing (problematic)
+- [x] proc_image_processing (problematic)
 - [ ] deep_detector (problematic)
 ### mapping
-- [ ] proc_mapping (problematic)
+- [ ] proc_mapping
 - [x] provider_sonar
 ### hydro
 - [x] provider_hydrophone
@@ -25,7 +25,7 @@
 - [ ] proc_com (problematic)
 ### power
 - [x] provider_power
-- [ ] provider_thruster
+- [ ] provider_thruster (problematic)
 ### internal_com
 - [x] interface_rs485
 
@@ -38,7 +38,7 @@
 - [ ] provider_imu
 ### vision
 - [ ] provider_vision
-- [ ] proc_image_processing (problematic)
+- [ ] proc_image_processing
 - [ ] deep_detector (problematic)
 ### mapping
 - [ ] proc_mapping
