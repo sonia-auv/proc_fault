@@ -16,13 +16,7 @@ namespace proc_fault
             virtual bool detection() = 0;
             virtual bool correction() = 0;
 
-            std::string getName()
-            {
-                return name;
-            }
-        
-        private:
-            std::string name;
+            virtual std::string getName() = 0;
     };
 }
 

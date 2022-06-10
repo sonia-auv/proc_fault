@@ -74,6 +74,11 @@ namespace proc_fault
                 return true;
             }
 
+            std::string getName()
+            {
+                return name;
+            }
+
         private:
             std::string name = "ProviderCom";
 
@@ -96,6 +101,11 @@ namespace proc_fault
             bool correction()
             {
                 return true;
+            }
+
+            std::string getName()
+            {
+                return name;
             }
 
         private:
@@ -122,6 +132,11 @@ namespace proc_fault
                 return true;
             }
 
+            std::string getName()
+            {
+                return name;
+            }
+
         private:
             std::string name = "ProcActuator";
 
@@ -144,6 +159,11 @@ namespace proc_fault
             bool correction()
             {
                 return true;
+            }
+
+            std::string getName()
+            {
+                return name;
             }
 
         private:
@@ -170,6 +190,11 @@ namespace proc_fault
                 return true;
             }
 
+            std::string getName()
+            {
+                return name;
+            }
+
         private:
             std::string name = "ProcDetection";
 
@@ -192,6 +217,11 @@ namespace proc_fault
             bool correction()
             {
                 return true;
+            }
+
+            std::string getName()
+            {
+                return name;
             }
 
         private:
@@ -247,6 +277,11 @@ namespace proc_fault
             {
                 return true;
             }
+
+            std::string getName()
+            {
+                return name;
+            }
         
         private:
             std::string name = "InterfaceRs485";
@@ -276,6 +311,11 @@ namespace proc_fault
             bool correction()
             {
                 return true;
+            }
+
+            std::string getName()
+            {
+                return name;
             }
         
         private:
@@ -307,6 +347,11 @@ namespace proc_fault
             {
                 return true;
             }
+
+            std::string getName()
+            {
+                return name;
+            }
         
         private:
             std::string name = "ProviderHydrophone";
@@ -337,6 +382,11 @@ namespace proc_fault
             {
                 return true;
             }
+
+            std::string getName()
+            {
+                return name;
+            }
         
         private:
             std::string name = "ProviderHydrophone";
@@ -366,6 +416,11 @@ namespace proc_fault
             bool correction()
             {
                 return true;
+            }
+
+            std::string getName()
+            {
+                return name;
             }
         
         private:
@@ -404,6 +459,11 @@ namespace proc_fault
             bool correction()
             {
                 return true;
+            }
+
+            std::string getName()
+            {
+                return name;
             }
         
         private:
@@ -459,6 +519,12 @@ namespace proc_fault
             {
                 return true;
             }
+
+            std::string getName()
+            {
+                return name;
+            }
+
         private:
             std::string name = "ProcControl";
 
@@ -488,6 +554,11 @@ namespace proc_fault
             bool correction()
             {
                 return true;
+            }
+
+            std::string getName()
+            {
+                return name;
             }
 
         private:
@@ -520,6 +591,11 @@ namespace proc_fault
             {
                 return true;
             }
+
+            std::string getName()
+            {
+                return name;
+            }
         
         private:
             std::string name = "ProviderDvl";
@@ -549,6 +625,11 @@ namespace proc_fault
             bool correction()
             {
                 return true;
+            }
+
+            std::string getName()
+            {
+                return name;
             }
 
         private:
