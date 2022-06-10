@@ -37,9 +37,9 @@
 /proc_fault/internal_com/rs485/timestamp_ms: 1000
 /proc_fault/internal_com/rs485/enable: true
 
-/proc_fault/io/provider_actuator/enable: true
+/proc_fault/io/providerActuator/enable: true
 
-/proc_fault/io/proc_actuator/enable: true
+/proc_fault/io/procActuator/enable: true
 
 /proc_fault/under_water_com/providerCom/enable: true
 

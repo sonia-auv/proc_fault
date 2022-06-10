@@ -35,8 +35,8 @@ namespace proc_fault
 
         FindParameter("/vision/proc_detection/enable", procDetectionEnable);
 
-        FindParameter("/mapping/sonar/timestamp_ms", cameraTimestampsMs);
-        FindParameter("/mapping/sonar/enable", cameraEnable);
+        FindParameter("/mapping/sonar/timestamp_ms", sonarTimestampsMs);
+        FindParameter("/mapping/sonar/enable", sonarEnable);
 
         FindParameter("/mapping/procMapping/timestamp_ms", mappingTimestampsMs);
         FindParameter("/mapping/procMapping/enable", mappingEnable);
