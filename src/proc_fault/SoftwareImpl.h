@@ -75,6 +75,8 @@ namespace proc_fault
             }
 
         private:
+            std::string name = "ProviderCom";
+
             ros::ServiceClient service;
     };
 
@@ -97,6 +99,8 @@ namespace proc_fault
             }
 
         private:
+            std::string name = "ProviderThruster";
+
             ros::ServiceClient service;
     };
 
@@ -119,6 +123,8 @@ namespace proc_fault
             }
 
         private:
+            std::string name = "ProcActuator";
+
             ros::ServiceClient service;
     };
 
@@ -141,6 +147,8 @@ namespace proc_fault
             }
 
         private:
+            std::string name = "ProviderActuator";
+
             ros::ServiceClient service;
     };
 
@@ -163,6 +171,8 @@ namespace proc_fault
             }
 
         private:
+            std::string name = "ProcDetection";
+
             ros::ServiceClient service;
     };
 
@@ -185,6 +195,8 @@ namespace proc_fault
             }
 
         private:
+            std::string name = "ProcImageProcessing";
+
             ros::ServiceClient service;
     };
 
@@ -237,9 +249,10 @@ namespace proc_fault
             }
         
         private:
+            std::string name = "InterfaceRs485";
 
-        ros::Subscriber tx_topic;
-        std::chrono::milliseconds timestamp;
+            ros::Subscriber tx_topic;
+            std::chrono::milliseconds timestamp;
     };
 
     class ProviderPower: public SoftwareInterface
@@ -266,9 +279,10 @@ namespace proc_fault
             }
         
         private:
+            std::string name = "ProviderPower";
 
-        ros::Subscriber provider_power_topic;
-        std::chrono::milliseconds timestamp;
+            ros::Subscriber provider_power_topic;
+            std::chrono::milliseconds timestamp;
     };
 
     class ProcHydrophone: public SoftwareInterface
@@ -295,9 +309,10 @@ namespace proc_fault
             }
         
         private:
+            std::string name = "ProviderHydrophone";
 
-        ros::Subscriber proc_hydro_topic;
-        std::chrono::milliseconds timestamp;
+            ros::Subscriber proc_hydro_topic;
+            std::chrono::milliseconds timestamp;
     };
 
     class ProviderHydrophone: public SoftwareInterface
@@ -324,9 +339,10 @@ namespace proc_fault
             }
         
         private:
+            std::string name = "ProviderHydrophone";
 
-        ros::Subscriber provider_hydro_topic;
-        std::chrono::milliseconds timestamp;
+            ros::Subscriber provider_hydro_topic;
+            std::chrono::milliseconds timestamp;
     };
 
     class ProviderSonar: public SoftwareInterface
@@ -353,9 +369,10 @@ namespace proc_fault
             }
         
         private:
+            std::string name = "ProviderSonar";
 
-        ros::Subscriber provider_sonar_topic;
-        std::chrono::milliseconds timestamp;
+            ros::Subscriber provider_sonar_topic;
+            std::chrono::milliseconds timestamp;
     };
 
     class ProviderVision: public SoftwareInterface
@@ -390,12 +407,13 @@ namespace proc_fault
             }
         
         private:
+            std::string name = "ProviderVision";
 
-        ros::Subscriber provider_vision_front_topic;
-        ros::Subscriber provider_vision_bottom_topic;
+            ros::Subscriber provider_vision_front_topic;
+            ros::Subscriber provider_vision_bottom_topic;
 
-        std::chrono::milliseconds topTimestamp;
-        std::chrono::milliseconds bottomTimestamp;
+            std::chrono::milliseconds topTimestamp;
+            std::chrono::milliseconds bottomTimestamp;
     };
 
 /*
@@ -442,6 +460,8 @@ namespace proc_fault
                 return true;
             }
         private:
+            std::string name = "ProcControl";
+
             ros::Subscriber controlSubscriber;
             std::chrono::milliseconds timestamp;
     };
@@ -471,6 +491,8 @@ namespace proc_fault
             }
 
         private:
+            std::string name = "ProviderImu";
+
             ros::Subscriber imuSubscriber;
             std::chrono::milliseconds timestamp;
     };
@@ -500,6 +522,8 @@ namespace proc_fault
             }
         
         private:
+            std::string name = "ProviderDvl";
+
             ros::Subscriber dvlSubscriber;
             std::chrono::milliseconds timestamp;
     };
@@ -528,6 +552,8 @@ namespace proc_fault
             }
 
         private:
+            std::string name = "ProviderDepth";
+
             ros::Subscriber depthSubscriber;
             std::chrono::milliseconds timestamp;
     };

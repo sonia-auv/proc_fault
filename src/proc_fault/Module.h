@@ -58,7 +58,13 @@ namespace proc_fault
                 std::unique_lock<std::mutex> mlock(ArraysMutex);
                 for(SoftwareInterface* soft : softwareInterfaceArray)
                 {
-                    tempMonitoring &= soft->detection();
+                    bool detection = soft->detection();
+                    tempMonitoring &= detection;
+
+                    if(!detection)
+                    {
+                        ROS_ERROR("Software: %s encountered an error", soft->getName().c_str());
+                    }
                 }
                 monitoringResult = tempMonitoring;
             }
