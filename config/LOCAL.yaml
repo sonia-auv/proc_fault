@@ -32,6 +32,9 @@
 /proc_fault/power/providerPower/timestamp_ms: 1000
 /proc_fault/power/providerPower/enable: true
 
+/proc_fault/power/boardPowerSupply/timestamp_ms: 5000
+/proc_fault/power/boardPowerSupply/enable: true
+
 /proc_fault/power/providerThruster/enable: true
 
 /proc_fault/internal_com/rs485/timestamp_ms: 1000

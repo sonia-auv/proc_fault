@@ -24,8 +24,14 @@ namespace proc_fault
             void initUnderwaterCom();
             void initPower();
             void initInternalCom();
+
+            void rs485Callback(const sonia_common::SendRS485Msg &receivedData);
+
             std::vector<Module*> procFaultModule;
             ros::Publisher faultPublisher;
+
+            ros::Subscriber rs485Subscriber;
+            ros::Publisher rs485Publisher;
     };
 }
 
