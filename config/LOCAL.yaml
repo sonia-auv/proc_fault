@@ -10,4 +10,38 @@
 /proc_fault/navigation/control/timestamp_ms: 1000
 /proc_fault/navigation/control/enable: true
 
+/proc_fault/vision/camera/timestamp_ms: 1000
+/proc_fault/vision/camera/enable: true
+
+/proc_fault/vision/proc_image_processing/enable: true
+
+/proc_fault/vision/proc_detection/enable: true
+
+/proc_fault/mapping/sonar/timestamp_ms: 1000
+/proc_fault/mapping/sonar/enable: true
+
+/proc_fault/mapping/procMapping/timestamp_ms: 1000
+/proc_fault/mapping/procMapping/enable: true
+
+/proc_fault/hydro/providerHydro/timestamp_ms: 1000
+/proc_fault/hydro/providerHydro/enable: true
+
+/proc_fault/hydro/procHydro/timestamp_ms: 1000
+/proc_fault/hydro/procHydro/enable: true
+
+/proc_fault/power/providerPower/timestamp_ms: 1000
+/proc_fault/power/providerPower/enable: true
+
+/proc_fault/power/providerThruster/enable: true
+
+/proc_fault/internal_com/rs485/timestamp_ms: 1000
+/proc_fault/internal_com/rs485/enable: true
+
+/proc_fault/io/providerActuator/enable: true
+
+/proc_fault/io/procActuator/enable: true
+
+/proc_fault/under_water_com/providerCom/enable: true
+
 /proc_fault/initial_node_sleep_second: 30
+/proc_fault/loop_sleep_time_second: 1

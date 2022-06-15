@@ -37,7 +37,41 @@ namespace proc_fault
         int controlTimestampsMs = 1000;
         bool controlEnable = true;
 
+        int cameraTimestampsMs = 1000;
+        bool cameraEnable = true;
+
+        bool procImageProcessingEnable = true;
+
+        bool procDetectionEnable = true;
+
+        int sonarTimestampsMs = 1000;
+        bool sonarEnable = true;
+
+        int providerHydroTimestampsMs = 1000;
+        bool providerHydroEnable = true;
+
+        int procHydroTimestampsMs = 1000;
+        bool procHydroEnable = true;
+
+        int powerTimestampsMs = 1000;
+        bool powerEnable = true;
+
+        int interfaceTimestampsMs = 1000;
+        bool interfaceEnable = true;
+
+        int mappingTimestampsMs = 1000;
+        bool mappingEnable = true;
+
+        bool providerActuatorEnable = true;
+
+        bool procActuatorEnable = true;
+
+        bool providerUnderwaterComEnable = true;
+
+        bool providerThrusterEnable = true;
+
         int initialNodeSleepSecond = 30;
+        int loopSleepTimeSecond = 1;
 
     private:
 
@@ -51,7 +85,6 @@ namespace proc_fault
 
         template <typename TType>
         void FindParameter(const std::string &paramName, TType &attribute);
-
 
         };
 }

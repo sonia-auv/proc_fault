@@ -46,7 +46,7 @@ namespace proc_fault
                 while(monitoringThreadRunning)
                 {
                     //sleep 1 sec
-                    ros::Duration(1).sleep();
+                    ros::Duration(Configuration::getInstance()->loopSleepTimeSecond).sleep();
                     this->monitor();
                 }
             }
@@ -58,7 +58,13 @@ namespace proc_fault
                 std::unique_lock<std::mutex> mlock(ArraysMutex);
                 for(SoftwareInterface* soft : softwareInterfaceArray)
                 {
-                    tempMonitoring &= soft->detection();
+                    bool detection = soft->detection();
+                    tempMonitoring &= detection;
+
+                    if(!detection)
+                    {
+                        ROS_ERROR("Software: %s encountered an error", soft->getName().c_str());
+                    }
                 }
                 monitoringResult = tempMonitoring;
             }
