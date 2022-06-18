@@ -30,9 +30,9 @@ namespace proc_fault
 
     ProcFaultNode::~ProcFaultNode()
     {
-        for(Module* module : procFaultModule)
+        for(std::pair<std::string, Module*> module_pair : procFaultModule)
         {
-            delete module;
+            delete module_pair.second;
         }
 
         procFaultModule.clear();
@@ -64,7 +64,7 @@ namespace proc_fault
             navigationSoftwareInterface.push_back(new ProviderDepth());
         }
 
-        procFaultModule.push_back(new Module("Navigation", navigationSoftwareInterface, navigationHardwareInterface));
+        procFaultModule[NavigationName] = new Module(NavigationName, navigationSoftwareInterface, navigationHardwareInterface);
     }
 
     void ProcFaultNode::initVision()
@@ -87,7 +87,7 @@ namespace proc_fault
             visionSoftwareInterface.push_back(new ProcDetection());
         }
 
-        procFaultModule.push_back(new Module("Vision", visionSoftwareInterface, visionHardwareInterface));
+        procFaultModule[VisionName] = new Module(VisionName, visionSoftwareInterface, visionHardwareInterface);
     }
 
     void ProcFaultNode::initMapping()
@@ -105,7 +105,7 @@ namespace proc_fault
             //mappingSoftwareInterface.push_back(new ProcMapping());
         }
 
-        procFaultModule.push_back(new Module("Mapping", mappingSoftwareInterface, mappingHardwareInterface));
+        procFaultModule[MappingName] = new Module(MappingName, mappingSoftwareInterface, mappingHardwareInterface);
     }
 
     void ProcFaultNode::initHydro()
@@ -123,7 +123,7 @@ namespace proc_fault
             hydroSoftwareInterface.push_back(new ProcHydrophone());
         }
 
-        procFaultModule.push_back(new Module("Hydro", hydroSoftwareInterface, hydroHardwareInterface));
+        procFaultModule[HydroName] = new Module(HydroName, hydroSoftwareInterface, hydroHardwareInterface);
     }
 
     void ProcFaultNode::initIo()
@@ -141,7 +141,7 @@ namespace proc_fault
             ioSoftwareInterface.push_back(new ProcActuator());
         }
 
-        procFaultModule.push_back(new Module("Io", ioSoftwareInterface, ioHardwareInterface));
+        procFaultModule[IoName] = new Module(IoName, ioSoftwareInterface, ioHardwareInterface);
     }
 
     void ProcFaultNode::initUnderwaterCom()
@@ -154,7 +154,7 @@ namespace proc_fault
             underwaterComSoftwareInterface.push_back(new ProviderCom());
         }
         
-        procFaultModule.push_back(new Module("Underwater Com", underwaterComSoftwareInterface, underwaterComHardwareInterface));
+        procFaultModule[UnderwaterName] = new Module(UnderwaterName, underwaterComSoftwareInterface, underwaterComHardwareInterface);
     }
 
     void ProcFaultNode::initPower()
@@ -177,7 +177,7 @@ namespace proc_fault
             powerHardwareInterface.push_back(new BoardPowerSupply(&rs485Publisher));
         }
         
-        procFaultModule.push_back(new Module("Power", powerSoftwareInterface, powerHardwareInterface));
+        procFaultModule[PowerName] = new Module(PowerName, powerSoftwareInterface, powerHardwareInterface);
     }
 
     void ProcFaultNode::initInternalCom()
@@ -190,14 +190,14 @@ namespace proc_fault
             internalComSoftwareInterface.push_back(new InterfaceRs485());
         }
         
-        procFaultModule.push_back(new Module("Internal Com", internalComSoftwareInterface, internalComHardwareInterface));
+        procFaultModule[InternalName] = new Module(InternalName, internalComSoftwareInterface, internalComHardwareInterface);
     }
 
     void ProcFaultNode::rs485Callback(const sonia_common::SendRS485Msg &receivedData)
     {
-        for(Module* module : procFaultModule)
+        for(std::pair<std::string, Module*> module_pair : procFaultModule)
         {
-            module->rs485Callback(receivedData);
+            module_pair.second->rs485Callback(receivedData);
         }
     }
 
@@ -209,13 +209,14 @@ namespace proc_fault
             ros::spinOnce();
 
             sonia_common::FaultDetection msg;
-            msg.navigation = procFaultModule[0]->checkMonitoring();
-            msg.vision = procFaultModule[1]->checkMonitoring();
-            msg.mapping = procFaultModule[2]->checkMonitoring();
-            msg.io = procFaultModule[3]->checkMonitoring();
-            msg.underwater_com = procFaultModule[4]->checkMonitoring();
-            msg.power = procFaultModule[5]->checkMonitoring();
-            msg.internal_com = procFaultModule[6]->checkMonitoring();
+            msg.navigation = procFaultModule[NavigationName]->checkMonitoring();
+            msg.vision = procFaultModule[VisionName]->checkMonitoring();
+            msg.mapping = procFaultModule[MappingName]->checkMonitoring();
+            msg.hydro = procFaultModule[HydroName]->checkMonitoring();
+            msg.io = procFaultModule[IoName]->checkMonitoring();
+            msg.underwater_com = procFaultModule[UnderwaterName]->checkMonitoring();
+            msg.power = procFaultModule[PowerName]->checkMonitoring();
+            msg.internal_com = procFaultModule[InternalName]->checkMonitoring();
 
             faultPublisher.publish(msg);
 
