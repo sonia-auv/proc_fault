@@ -76,7 +76,11 @@ namespace proc_fault
 
                     if(!detection)
                     {
-                        ROS_ERROR("Software: %s encountered an error", soft->getName().c_str());
+                        soft->printErrorNotification();
+                    }
+                    else
+                    {
+                        soft->resetErrorNotification();
                     }
                 }
                 monitoringResult = tempMonitoring;
