@@ -53,7 +53,7 @@ namespace proc_fault
                 msg.slave = slaveId;
 
                 // TODO: replace it by the good value
-                msg.cmd = 31;
+                msg.cmd = 30;
 
                 rs485Topic->publish(msg);
             }
