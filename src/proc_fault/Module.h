@@ -83,6 +83,23 @@ namespace proc_fault
                         soft->resetErrorNotification();
                     }
                 }
+
+                for(HardwareInterface* hard : hardwareInterfaceArray)
+                {
+                    bool detection = hard->detection();
+                    tempMonitoring &= detection;
+
+                    /* not implemented for now
+                    if(!detection)
+                    {
+                        hard->printErrorNotification();
+                    }
+                    else
+                    {
+                        hard->resetErrorNotification();
+                    }
+                    */
+                }
                 monitoringResult = tempMonitoring;
             }
 
