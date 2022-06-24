@@ -22,6 +22,10 @@ namespace proc_fault
 
         static Configuration* getInstance()
         {
+            if(instance == nullptr)
+            {
+                ROS_ERROR("didn't succeed to create a new configuration instance");
+            }
             return instance;
         }
 
@@ -69,6 +73,9 @@ namespace proc_fault
         bool providerUnderwaterComEnable = true;
 
         bool providerThrusterEnable = true;
+
+        int boardPowerSupplyMs = 5000;
+        bool boardPowerSupplyEnable = true;
 
         int initialNodeSleepSecond = 30;
         int loopSleepTimeSecond = 1;

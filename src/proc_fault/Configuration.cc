@@ -58,6 +58,9 @@ namespace proc_fault
 
         FindParameter("/power/providerThruster/enable", providerThrusterEnable);
 
+        FindParameter("/power/boardPowerSupply/timestamp_ms", boardPowerSupplyMs);
+        FindParameter("/power/boardPowerSupply/enable", boardPowerSupplyEnable);
+
         FindParameter("/internal_com/rs485/timestamp_ms", interfaceTimestampsMs);
         FindParameter("/internal_com/rs485/enable", interfaceEnable);
 
