@@ -18,6 +18,7 @@ namespace proc_fault
 
             virtual void resetErrorNotification()
             {
+                ROS_WARN("Software: %s as recovered", getName().c_str());
                 newError = true;
             }
 

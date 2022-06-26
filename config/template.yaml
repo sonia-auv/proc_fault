@@ -40,6 +40,9 @@
 /proc_fault/internal_com/rs485/timestamp_ms: 1000
 /proc_fault/internal_com/rs485/enable: true
 
+/proc_fault/internal_com/boardKillMission/timestamp_ms: 5000
+/proc_fault/internal_com/boardKillMission/enable: true
+
 /proc_fault/io/providerActuator/enable: true
 
 /proc_fault/io/procActuator/enable: true

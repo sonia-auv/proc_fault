@@ -77,6 +77,9 @@ namespace proc_fault
         int boardPowerSupplyMs = 5000;
         bool boardPowerSupplyEnable = true;
 
+        int boardKillMissionMs = 5000;
+        bool boardKillMissionEnable = true;
+
         int initialNodeSleepSecond = 30;
         int loopSleepTimeSecond = 1;
 

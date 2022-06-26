@@ -64,6 +64,9 @@ namespace proc_fault
         FindParameter("/internal_com/rs485/timestamp_ms", interfaceTimestampsMs);
         FindParameter("/internal_com/rs485/enable", interfaceEnable);
 
+        FindParameter("/internal_com/boardKillMission/timestamp_ms", boardKillMissionMs);
+        FindParameter("/internal_com/boardKillMission/enable", boardKillMissionEnable);
+
         FindParameter("/initial_node_sleep_second", initialNodeSleepSecond);
         FindParameter("/loop_sleep_time_second", loopSleepTimeSecond);
 

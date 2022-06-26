@@ -31,15 +31,18 @@ namespace proc_fault
             }
     };
 
-    class BoardPowerSupply : public HardwareInterface
+    class Rs485KeepAliveBoard : public HardwareInterface
     {
-        public:
-            BoardPowerSupply(ros::Publisher* _rs485Topic)
+         public:
+            Rs485KeepAliveBoard(ros::Publisher* _rs485Topic, uint8_t _slaveId, std::string _name, unsigned int _target_timestamp)
             {
                 rs485Topic = _rs485Topic;
+                slaveId = _slaveId;
+                name = _name;
+                target_timestamp = _target_timestamp;
             }
 
-            void rs485Callback(const sonia_common::SendRS485Msg &receivedData)
+            virtual void rs485Callback(const sonia_common::SendRS485Msg &receivedData)
             {
                 if(receivedData.slave == slaveId)
                 {
@@ -47,38 +50,56 @@ namespace proc_fault
                 }
             }
 
-            void rs485Publish()
+            virtual void rs485Publish()
             {
                 sonia_common::SendRS485Msg msg;
                 msg.slave = slaveId;
 
-                // TODO: replace it by the good value
-                msg.cmd = 30;
+                msg.cmd = sonia_common::SendRS485Msg::CMD_KEEP_ALIVE;
 
                 rs485Topic->publish(msg);
             }
 
-            bool detection()
+            virtual bool detection()
             {
-                return CommonSoftware::timeDetectionAlgorithm(timestamp, Configuration::getInstance()->boardPowerSupplyMs);
+                return CommonSoftware::timeDetectionAlgorithm(timestamp, target_timestamp);
             }
 
-            bool correction()
+            virtual bool correction()
             {
                 return true;
             }
 
-            std::string getName()
+            virtual std::string getName()
             {
                 return name;
             }
 
         private:
-            uint8_t slaveId = sonia_common::SendRS485Msg::SLAVE_PWR_MANAGEMENT;
+            unsigned int target_timestamp;
+            uint8_t slaveId;
             ros::Publisher* rs485Topic;
 
-            std::string name = "Power Supply";
+            std::string name;
             std::chrono::milliseconds timestamp;
+    };
+
+    class BoardPowerSupply : public Rs485KeepAliveBoard
+    {
+        public:
+            BoardPowerSupply(ros::Publisher* _rs485Topic, uint8_t _slaveId, std::string _name, unsigned int _target_timestamp):
+            Rs485KeepAliveBoard(_rs485Topic, _slaveId, _name, _target_timestamp)
+            {
+            }
+    };
+
+    class BoardKillMission : public Rs485KeepAliveBoard
+    {
+        public:
+            BoardKillMission(ros::Publisher* _rs485Topic, uint8_t _slaveId, std::string _name, unsigned int _target_timestamp):
+            Rs485KeepAliveBoard( _rs485Topic, _slaveId, _name, _target_timestamp)
+            {
+            }
     };
 }
 

@@ -174,7 +174,7 @@ namespace proc_fault
 
         if(Configuration::getInstance()->boardPowerSupplyEnable)
         {
-            powerHardwareInterface.push_back(new BoardPowerSupply(&rs485Publisher));
+            powerHardwareInterface.push_back(new BoardPowerSupply(&rs485Publisher, sonia_common::SendRS485Msg::SLAVE_PWR_MANAGEMENT, "Power Supply", Configuration::getInstance()->boardPowerSupplyMs));
         }
         
         procFaultModule[PowerName] = new Module(PowerName, powerSoftwareInterface, powerHardwareInterface);
@@ -188,6 +188,11 @@ namespace proc_fault
         if(Configuration::getInstance()->interfaceEnable)
         {
             internalComSoftwareInterface.push_back(new InterfaceRs485());
+        }
+
+        if(Configuration::getInstance()->boardKillMissionEnable)
+        {
+            internalComHardwareInterface.push_back(new BoardKillMission(&rs485Publisher, sonia_common::SendRS485Msg::SLAVE_KILLMISSION, "Kill Mission Switch", Configuration::getInstance()->boardKillMissionMs));
         }
         
         procFaultModule[InternalName] = new Module(InternalName, internalComSoftwareInterface, internalComHardwareInterface);
