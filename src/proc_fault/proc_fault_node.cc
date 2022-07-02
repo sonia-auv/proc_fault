@@ -64,6 +64,11 @@ namespace proc_fault
             navigationSoftwareInterface.push_back(new ProviderDepth());
         }
 
+        if(Configuration::getInstance()->boardEscEnable)
+        {
+            navigationHardwareInterface.push_back(new BoardEsc(&rs485Publisher, sonia_common::SendRS485Msg::SLAVE_ESC, "Board Esc", Configuration::getInstance()->boardEscTimestampsMs));
+        }
+
         procFaultModule[NavigationName] = new Module(NavigationName, navigationSoftwareInterface, navigationHardwareInterface);
     }
 
@@ -141,6 +146,11 @@ namespace proc_fault
             ioSoftwareInterface.push_back(new ProcActuator());
         }
 
+        if(Configuration::getInstance()->boardIoEnable)
+        {
+            ioHardwareInterface.push_back(new BoardKillMission(&rs485Publisher, sonia_common::SendRS485Msg::SLAVE_IO, "Io Board", Configuration::getInstance()->boardIoTimestampsMs));
+        }
+
         procFaultModule[IoName] = new Module(IoName, ioSoftwareInterface, ioHardwareInterface);
     }
 
@@ -174,7 +184,7 @@ namespace proc_fault
 
         if(Configuration::getInstance()->boardPowerSupplyEnable)
         {
-            powerHardwareInterface.push_back(new BoardPowerSupply(&rs485Publisher));
+            powerHardwareInterface.push_back(new BoardPowerSupply(&rs485Publisher, sonia_common::SendRS485Msg::SLAVE_PWR_MANAGEMENT, "Power Supply", Configuration::getInstance()->boardPowerSupplyTimestampsMs));
         }
         
         procFaultModule[PowerName] = new Module(PowerName, powerSoftwareInterface, powerHardwareInterface);
@@ -188,6 +198,11 @@ namespace proc_fault
         if(Configuration::getInstance()->interfaceEnable)
         {
             internalComSoftwareInterface.push_back(new InterfaceRs485());
+        }
+
+        if(Configuration::getInstance()->boardKillMissionEnable)
+        {
+            internalComHardwareInterface.push_back(new BoardKillMission(&rs485Publisher, sonia_common::SendRS485Msg::SLAVE_KILLMISSION, "Kill Mission Switch", Configuration::getInstance()->boardKillMissionTimestampsMs));
         }
         
         procFaultModule[InternalName] = new Module(InternalName, internalComSoftwareInterface, internalComHardwareInterface);

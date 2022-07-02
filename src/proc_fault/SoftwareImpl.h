@@ -435,8 +435,8 @@ namespace proc_fault
         public:
             ProviderVision()
             {
-                provider_vision_front_topic = ros::NodeHandle("~").subscribe("/camera_array/image_raw/front", 10, &ProviderVision::frontCallback, this);
-                provider_vision_bottom_topic = ros::NodeHandle("~").subscribe("/camera_array/image_raw/bottom", 10, &ProviderVision::bottomCallback, this);
+                provider_vision_front_topic = ros::NodeHandle("~").subscribe("/camera_array/front/image_raw", 10, &ProviderVision::frontCallback, this);
+                provider_vision_bottom_topic = ros::NodeHandle("~").subscribe("/camera_array/bottom/image_raw", 10, &ProviderVision::bottomCallback, this);
             }
 
             void frontCallback(const sensor_msgs::Image &receivedData)

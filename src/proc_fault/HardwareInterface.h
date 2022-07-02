@@ -21,7 +21,28 @@ namespace proc_fault
             virtual void rs485Publish() = 0;
             virtual void rs485Callback(const sonia_common::SendRS485Msg &receivedData) = 0;
 
+            virtual void resetErrorNotification()
+            {
+                if(!newError)
+                {
+                    ROS_WARN("Hardware: %s as recovered", getName().c_str());
+                    newError = true;
+                }
+            }
+
+            virtual void printErrorNotification()
+            {
+                if(newError)
+                {
+                    ROS_ERROR("Hardware: %s encountered an error", getName().c_str());
+                    newError = false;
+                }
+            }
+
             virtual std::string getName() = 0;
+
+        private:
+            bool newError = true;
     };
 }
 

@@ -89,7 +89,6 @@ namespace proc_fault
                     bool detection = hard->detection();
                     tempMonitoring &= detection;
 
-                    /* not implemented for now
                     if(!detection)
                     {
                         hard->printErrorNotification();
@@ -98,7 +97,6 @@ namespace proc_fault
                     {
                         hard->resetErrorNotification();
                     }
-                    */
                 }
                 monitoringResult = tempMonitoring;
             }
