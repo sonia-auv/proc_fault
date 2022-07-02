@@ -41,6 +41,9 @@ namespace proc_fault
         int controlTimestampsMs = 1000;
         bool controlEnable = true;
 
+        int boardEscTimestampsMs = 5000;
+        bool boardEscEnable = true;
+
         int cameraTimestampsMs = 1000;
         bool cameraEnable = true;
 
@@ -70,14 +73,17 @@ namespace proc_fault
 
         bool procActuatorEnable = true;
 
+        int boardIoTimestampsMs = 5000;
+        bool boardIoEnable = true;
+
         bool providerUnderwaterComEnable = true;
 
         bool providerThrusterEnable = true;
 
-        int boardPowerSupplyMs = 5000;
+        int boardPowerSupplyTimestampsMs = 5000;
         bool boardPowerSupplyEnable = true;
 
-        int boardKillMissionMs = 5000;
+        int boardKillMissionTimestampsMs = 5000;
         bool boardKillMissionEnable = true;
 
         int initialNodeSleepSecond = 30;

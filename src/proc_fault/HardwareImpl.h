@@ -101,6 +101,24 @@ namespace proc_fault
             {
             }
     };
+
+    class BoardIo : public Rs485KeepAliveBoard
+    {
+        public:
+            BoardIo(ros::Publisher* _rs485Topic, uint8_t _slaveId, std::string _name, unsigned int _target_timestamp):
+            Rs485KeepAliveBoard( _rs485Topic, _slaveId, _name, _target_timestamp)
+            {
+            }
+    };
+
+    class BoardEsc : public Rs485KeepAliveBoard
+    {
+        public:
+            BoardEsc(ros::Publisher* _rs485Topic, uint8_t _slaveId, std::string _name, unsigned int _target_timestamp):
+            Rs485KeepAliveBoard( _rs485Topic, _slaveId, _name, _target_timestamp)
+            {
+            }
+    };
 }
 
 #endif

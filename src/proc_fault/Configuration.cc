@@ -28,6 +28,9 @@ namespace proc_fault
         FindParameter("/navigation/control/timestamp_ms", controlTimestampsMs);
         FindParameter("/navigation/control/enable", controlEnable);
 
+        FindParameter("/navigation/boardEsc/timestamp_ms", boardEscTimestampsMs);
+        FindParameter("/navigation/boardEsc/enable", boardEscEnable);
+
         FindParameter("/vision/camera/timestamp_ms", cameraTimestampsMs);
         FindParameter("/vision/camera/enable", cameraEnable);
 
@@ -51,6 +54,9 @@ namespace proc_fault
         
         FindParameter("/io/procActuator/enable", procActuatorEnable);
 
+        FindParameter("/io/boardIo/timestamp_ms", boardIoTimestampsMs);
+        FindParameter("/io/boardIo/enable", boardIoEnable);
+
         FindParameter("/under_water_com/providerCom/enable", providerUnderwaterComEnable);
 
         FindParameter("/power/providerPower/timestamp_ms", powerTimestampsMs);
@@ -58,13 +64,13 @@ namespace proc_fault
 
         FindParameter("/power/providerThruster/enable", providerThrusterEnable);
 
-        FindParameter("/power/boardPowerSupply/timestamp_ms", boardPowerSupplyMs);
+        FindParameter("/power/boardPowerSupply/timestamp_ms", boardPowerSupplyTimestampsMs);
         FindParameter("/power/boardPowerSupply/enable", boardPowerSupplyEnable);
 
         FindParameter("/internal_com/rs485/timestamp_ms", interfaceTimestampsMs);
         FindParameter("/internal_com/rs485/enable", interfaceEnable);
 
-        FindParameter("/internal_com/boardKillMission/timestamp_ms", boardKillMissionMs);
+        FindParameter("/internal_com/boardKillMission/timestamp_ms", boardKillMissionTimestampsMs);
         FindParameter("/internal_com/boardKillMission/enable", boardKillMissionEnable);
 
         FindParameter("/initial_node_sleep_second", initialNodeSleepSecond);
