@@ -66,7 +66,7 @@ namespace proc_fault
 
         if(Configuration::getInstance()->boardEscEnable)
         {
-            ioSoftwareInterface.push_back(new BoardEsc(&rs485Publisher, sonia_common::SendRS485Msg::SLAVE_ESC, "Board Esc", Configuration::getInstance()->boardEscTimestampsMs));
+            navigationHardwareInterface.push_back(new BoardEsc(&rs485Publisher, sonia_common::SendRS485Msg::SLAVE_ESC, "Board Esc", Configuration::getInstance()->boardEscTimestampsMs));
         }
 
         procFaultModule[NavigationName] = new Module(NavigationName, navigationSoftwareInterface, navigationHardwareInterface);
@@ -148,7 +148,7 @@ namespace proc_fault
 
         if(Configuration::getInstance()->boardIoEnable)
         {
-            ioSoftwareInterface.push_back(new BoardKillMission(&rs485Publisher, sonia_common::SendRS485Msg::SLAVE_IO, "Io Board", Configuration::getInstance()->boardIoTimestampsMs));
+            ioHardwareInterface.push_back(new BoardKillMission(&rs485Publisher, sonia_common::SendRS485Msg::SLAVE_IO, "Io Board", Configuration::getInstance()->boardIoTimestampsMs));
         }
 
         procFaultModule[IoName] = new Module(IoName, ioSoftwareInterface, ioHardwareInterface);
