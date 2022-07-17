@@ -9,11 +9,12 @@
 
 #include "SoftwareInterface.h"
 #include "HardwareInterface.h"
+#include "ModuleInterface.h"
 #include "Configuration.h"
 
 namespace proc_fault
 {
-    class Module 
+    class Module : public ModuleInterface
     {
         public:
             Module(std::string _moduleName, std::vector<SoftwareInterface*> _softwareInterfaceArray, std::vector<HardwareInterface*> _hardwareInterfaceArray)

@@ -36,7 +36,7 @@ namespace proc_fault
 
             void rs485Callback(const sonia_common::SendRS485Msg &receivedData);
 
-            std::map<std::string, Module*> procFaultModule;
+            std::map<std::string, ModuleInterface*> procFaultModule;
             ros::Publisher faultPublisher;
 
             ros::Subscriber rs485Subscriber;
