@@ -10,11 +10,11 @@ namespace proc_fault
         public:
             virtual ~ModuleInterface()
             {
-
+                
             }
             
-            void checkMonitoring() = 0;
-            void rs485Callback(const sonia_common::SendRS485Msg &receivedData) = 0;
+            virtual bool checkMonitoring() = 0;
+            virtual void rs485Callback(const sonia_common::SendRS485Msg &receivedData) = 0;
     };
 }
 
