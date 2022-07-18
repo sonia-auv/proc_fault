@@ -30,7 +30,7 @@ namespace proc_fault
 
             void motorFeedback(const std_msgs::UInt8MultiArray::ConstPtr &receivedData)
             {   
-                std::unique_lock<std::mutex> mlock(motorMutex);
+                std::unique_lock<std::mutex> mlock(motorMutex, std::defer_lock);
                 if(mlock.try_lock() == true)
                 {
                     for(int i = 0; i < 0; ++i)
@@ -60,7 +60,6 @@ namespace proc_fault
                 std_msgs::UInt8MultiArray motorMsg;
 
                 std::unique_lock<std::mutex> mlock(motorMutex);
-                mlock.lock();
 
                 for(int i = 0; i < feedbackMsg.data.size(); ++i)
                 {
@@ -99,10 +98,9 @@ namespace proc_fault
                     motor_feedback_publisher.publish(feedbackMsg);
                 }
 
-                mlock.unlock();
             }
 
-            bool checkMonitoring() {}
+            bool checkMonitoring() { return true; }
 
             void rs485Callback(const sonia_common::SendRS485Msg &receivedData) {}
         

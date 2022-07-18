@@ -31,7 +31,6 @@ namespace proc_fault
             ~Module()
             {
                 std::unique_lock<std::mutex> mlock(ArraysMutex);
-                mlock.lock();
 
                 monitoringThreadRunning = false;
                 for(SoftwareInterface* soft : softwareInterfaceArray)
@@ -40,7 +39,6 @@ namespace proc_fault
                 }
 
                 softwareInterfaceArray.clear();
-                mlock.unlock();
             }
 
             void rs485Callback(const sonia_common::SendRS485Msg &receivedData)
@@ -73,7 +71,6 @@ namespace proc_fault
                 bool tempMonitoring = true;
                 std::unique_lock<std::mutex> mlock(ArraysMutex);
 
-                mlock.lock();
                 for(SoftwareInterface* soft : softwareInterfaceArray)
                 {
                     bool detection = soft->detection();
@@ -105,7 +102,6 @@ namespace proc_fault
                 }
                 monitoringResult = tempMonitoring;
 
-                mlock.unlock();
             }
 
             void publishRs485()
