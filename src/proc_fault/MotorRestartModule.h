@@ -33,9 +33,9 @@ namespace proc_fault
                 std::unique_lock<std::mutex> mlock(motorMutex, std::defer_lock);
                 if(mlock.try_lock() == true)
                 {
-                    for(int i = 0; i < receivedData->data.size(); ++i)
+                    for(unsigned long int i = 0; i < receivedData->data.size(); ++i)
                     {
-                        feedbackMsg.data[i] = receivedData->data[i];
+                        feedbackMsg.data.push_back(receivedData->data[i]);
                     }
 
                     mlock.unlock();
@@ -61,7 +61,7 @@ namespace proc_fault
 
                 std::unique_lock<std::mutex> mlock(motorMutex);
 
-                for(int i = 0; i < feedbackMsg.data.size(); ++i)
+                for(unsigned long int i = 0; i < feedbackMsg.data.size(); ++i)
                 {
                     if(feedbackMsg.data[i] >= 2)
                     {
@@ -69,17 +69,17 @@ namespace proc_fault
                         {
                             motor_error_found = true;
                             feedbackMsg.data[i] = 4;
-                            motorMsg.data[i] = 0;
+                            motorMsg.data.push_back(0);
                             motorAlredyReseted[i] = true;
                         }
                         else
                         {
-                            motorMsg.data[i] = 1;
+                            motorMsg.data.push_back(1);
                         }
                     }
                     else
                     {
-                        motorMsg.data[i] = 1;
+                        motorMsg.data.push_back(1);
                     }
                 }
 
