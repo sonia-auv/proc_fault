@@ -33,7 +33,7 @@ namespace proc_fault
                 std::unique_lock<std::mutex> mlock(motorMutex, std::defer_lock);
                 if(mlock.try_lock() == true)
                 {
-                    for(int i = 0; i < 0; ++i)
+                    for(int i = 0; i < receivedData->data.size(); ++i)
                     {
                         feedbackMsg.data[i] = receivedData->data[i];
                     }
