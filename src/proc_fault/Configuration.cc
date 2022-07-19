@@ -73,6 +73,8 @@ namespace proc_fault
         FindParameter("/internal_com/boardKillMission/timestamp_ms", boardKillMissionTimestampsMs);
         FindParameter("/internal_com/boardKillMission/enable", boardKillMissionEnable);
 
+        FindParameter("/motor_reset_module/enable", enableMotorResetModule);
+
         FindParameter("/initial_node_sleep_second", initialNodeSleepSecond);
         FindParameter("/loop_sleep_time_second", loopSleepTimeSecond);
 

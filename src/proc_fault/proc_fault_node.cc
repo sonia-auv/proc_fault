@@ -33,7 +33,11 @@ namespace proc_fault
         initPower();
         initInternalCom();
 
-        procFaultModule["MotorRestartModule"] = new MotorRestartModule();
+
+        if(Configuration::getInstance()->enableMotorResetModule)
+        {
+            procFaultModule["MotorRestartModule"] = new MotorRestartModule();
+        }
     }
 
     ProcFaultNode::~ProcFaultNode()
