@@ -64,7 +64,7 @@ namespace proc_fault
 
                 for(unsigned long int i = 0; i < motorStatus.size(); ++i)
                 {
-                    if(feedbackMsg.data[i] >= 2)
+                    if(motorStatus[i] >= 2)
                     {
                         if(!motorAlreadyReseted[i])
                         {
