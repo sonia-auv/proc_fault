@@ -62,7 +62,7 @@ namespace proc_fault
 
                 std::unique_lock<std::mutex> mlock(motorMutex);
 
-                for(unsigned long int i = 0; i < feedbackMsg.data.size(); ++i)
+                for(unsigned long int i = 0; i < motorStatus.size(); ++i)
                 {
                     if(feedbackMsg.data[i] >= 2)
                     {
