@@ -91,7 +91,7 @@ namespace proc_fault
                     activate_motor_publisher.publish(motorMsg);
                     motor_feedback_publisher.publish(feedbackMsg);
 
-                    ros::Duration(5).sleep();
+                    ros::Duration(2).sleep();
 
                     std::fill(motorMsg.data.begin(),  motorMsg.data.end(), 1);
                     activate_motor_publisher.publish(motorMsg);
