@@ -35,7 +35,7 @@ namespace proc_fault
                 {
                     for(unsigned long int i = 0; i < receivedData->data.size(); ++i)
                     {
-                        feedbackMsg.data.push_back(receivedData->data[i]);
+                        motorStatus[i] = receivedData->data[i];
                     }
 
                     mlock.unlock();
@@ -58,6 +58,7 @@ namespace proc_fault
             {
                 bool motor_error_found = false;
                 std_msgs::UInt8MultiArray motorMsg;
+                std_msgs::UInt8MultiArray feedbackMsg;
 
                 std::unique_lock<std::mutex> mlock(motorMutex);
 
@@ -65,12 +66,12 @@ namespace proc_fault
                 {
                     if(feedbackMsg.data[i] >= 2)
                     {
-                        if(!motorAlredyReseted[i])
+                        if(!motorAlreadyReseted[i])
                         {
                             motor_error_found = true;
-                            feedbackMsg.data[i] = 4;
+                            motorStatus[i] = 4;
                             motorMsg.data.push_back(0);
-                            motorAlredyReseted[i] = true;
+                            motorAlreadyReseted[i] = true;
                         }
                         else
                         {
@@ -81,6 +82,8 @@ namespace proc_fault
                     {
                         motorMsg.data.push_back(1);
                     }
+
+                    feedbackMsg.data.push_back(motorStatus[i]);
                 }
 
                 if(motor_error_found)
@@ -107,8 +110,9 @@ namespace proc_fault
         private:
 
             std::mutex motorMutex;
-            std_msgs::UInt8MultiArray feedbackMsg;
-            std::array<bool,8> motorAlredyReseted = {false};
+            
+            std::array<bool,8> motorAlreadyReseted = {false};
+            std::array<int,8> motorStatus = {0};
             std::thread monitorThread;
             bool monitoringThreadRunning;
             
