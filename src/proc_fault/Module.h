@@ -9,11 +9,12 @@
 
 #include "SoftwareInterface.h"
 #include "HardwareInterface.h"
+#include "ModuleInterface.h"
 #include "Configuration.h"
 
 namespace proc_fault
 {
-    class Module 
+    class Module : public ModuleInterface
     {
         public:
             Module(std::string _moduleName, std::vector<SoftwareInterface*> _softwareInterfaceArray, std::vector<HardwareInterface*> _hardwareInterfaceArray)
@@ -69,6 +70,7 @@ namespace proc_fault
                 // check every detection
                 bool tempMonitoring = true;
                 std::unique_lock<std::mutex> mlock(ArraysMutex);
+
                 for(SoftwareInterface* soft : softwareInterfaceArray)
                 {
                     bool detection = soft->detection();
@@ -99,6 +101,7 @@ namespace proc_fault
                     }
                 }
                 monitoringResult = tempMonitoring;
+
             }
 
             void publishRs485()

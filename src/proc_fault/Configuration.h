@@ -86,6 +86,8 @@ namespace proc_fault
         int boardKillMissionTimestampsMs = 5000;
         bool boardKillMissionEnable = true;
 
+        bool enableMotorResetModule = true;
+
         int initialNodeSleepSecond = 30;
         int loopSleepTimeSecond = 1;
 

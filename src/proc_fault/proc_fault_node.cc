@@ -1,6 +1,8 @@
 #include <ros/ros.h>
 #include <vector>
 
+#include <std_msgs/UInt8MultiArray.h>
+
 #include <sonia_common/SendRS485Msg.h>
 #include <sonia_common/FaultDetection.h>
 
@@ -9,6 +11,10 @@
 #include "HardwareInterface.h"
 #include "SoftwareImpl.h"
 #include "HardwareImpl.h"
+
+#include "Module.h"
+#include "ModuleInterface.h"
+#include "MotorRestartModule.h"
 
 namespace proc_fault
 {
@@ -26,11 +32,17 @@ namespace proc_fault
         initUnderwaterCom();
         initPower();
         initInternalCom();
+
+
+        if(Configuration::getInstance()->enableMotorResetModule)
+        {
+            procFaultModule["MotorRestartModule"] = new MotorRestartModule();
+        }
     }
 
     ProcFaultNode::~ProcFaultNode()
     {
-        for(std::pair<std::string, Module*> module_pair : procFaultModule)
+        for(std::pair<std::string, ModuleInterface*> module_pair : procFaultModule)
         {
             delete module_pair.second;
         }
@@ -210,7 +222,7 @@ namespace proc_fault
 
     void ProcFaultNode::rs485Callback(const sonia_common::SendRS485Msg &receivedData)
     {
-        for(std::pair<std::string, Module*> module_pair : procFaultModule)
+        for(std::pair<std::string, ModuleInterface*> module_pair : procFaultModule)
         {
             module_pair.second->rs485Callback(receivedData);
         }
@@ -218,7 +230,7 @@ namespace proc_fault
 
     void ProcFaultNode::spin()
     {
-        ros::Rate r(5);
+        ros::Rate r(20);
         while(ros::ok())
         {
             ros::spinOnce();
