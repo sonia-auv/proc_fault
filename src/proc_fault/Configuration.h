@@ -88,6 +88,8 @@ namespace proc_fault
 
         bool enableMotorResetModule = true;
 
+        bool enableControlCheckerModule = true;
+
         int initialNodeSleepSecond = 30;
         int loopSleepTimeSecond = 1;
 

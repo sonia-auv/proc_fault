@@ -73,7 +73,7 @@ namespace proc_fault
                             motorMsg.data.push_back(0);
                             motorAlreadyReseted[i] = true;
 
-                            ROS_WARN("Restarting motor %d", i);
+                            ROS_WARN("Restarting motor %ld", i);
                         }
                         else
                         {

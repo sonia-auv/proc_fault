@@ -2,7 +2,7 @@
 #define PROC_FAULT_NODE_H
 
 #include <ros/ros.h>
-#include "Module.h"
+#include "ModuleInterface.h"
 
 namespace proc_fault
 {

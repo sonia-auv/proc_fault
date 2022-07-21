@@ -75,6 +75,8 @@ namespace proc_fault
 
         FindParameter("/motor_reset_module/enable", enableMotorResetModule);
 
+        FindParameter("/control_checker_module/enable", enableControlCheckerModule);
+
         FindParameter("/initial_node_sleep_second", initialNodeSleepSecond);
         FindParameter("/loop_sleep_time_second", loopSleepTimeSecond);
 

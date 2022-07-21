@@ -14,10 +14,10 @@
 
 namespace proc_fault
 {
-    class Module : public ModuleInterface
+    class MissionCheckerModule : public ModuleInterface
     {
         public:
-            Module(std::string _moduleName, std::vector<SoftwareInterface*> _softwareInterfaceArray, std::vector<HardwareInterface*> _hardwareInterfaceArray)
+            MissionCheckerModule(std::string _moduleName, std::vector<SoftwareInterface*> _softwareInterfaceArray, std::vector<HardwareInterface*> _hardwareInterfaceArray)
             {
                 softwareInterfaceArray = _softwareInterfaceArray;
                 hardwareInterfaceArray = _hardwareInterfaceArray;
@@ -25,10 +25,10 @@ namespace proc_fault
 
                 monitoringThreadRunning = true;
                 monitoringResult = true;
-                monitorThread = std::thread(std::bind(&Module::monitoringThreadCallback, this));
+                monitorThread = std::thread(std::bind(&MissionCheckerModule::monitoringThreadCallback, this));
             }
 
-            ~Module()
+            ~MissionCheckerModule()
             {
                 std::unique_lock<std::mutex> mlock(ArraysMutex);
 
