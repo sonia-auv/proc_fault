@@ -63,14 +63,14 @@ namespace proc_fault
                 bool dvlBadMessage = true;
                 bool imuDetect = true;
 
-                if(timeDetectionAlgorithm(dvl_timestamp, 200))
+                if(!timeDetectionAlgorithm(dvl_timestamp, 200))
                 {
                     dvlMessageDetect = false;
 
                     sonia_common::FaultWarning msg;
                     msg.Module = "DVL";
                     msg.Severity = sonia_common::FaultWarning::Error;
-                    msg.Msg = "Dvl does not send data at minimum 5 hz";
+                    msg.Msg = "Dvl does not send data";
 
                     faultWarning_publisher.publish(msg);
                 }
@@ -97,14 +97,14 @@ namespace proc_fault
                     faultWarning_publisher.publish(msg);
                 }
 
-                if(timeDetectionAlgorithm(imu_timestamp, 25))
+                if(!timeDetectionAlgorithm(imu_timestamp, 30))
                 {
                     imuDetect = false;
 
                     sonia_common::FaultWarning msg;
                     msg.Module = "IMU";
                     msg.Severity = sonia_common::FaultWarning::Error;
-                    msg.Msg = "IMU does not send data at minimum 40 hz";
+                    msg.Msg = "IMU does not send data";
 
                     faultWarning_publisher.publish(msg);
                 }
