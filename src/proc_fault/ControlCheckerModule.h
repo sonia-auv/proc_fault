@@ -97,7 +97,7 @@ namespace proc_fault
                     faultWarning_publisher.publish(msg);
                 }
 
-                if(!timeDetectionAlgorithm(imu_timestamp, 30))
+                if(!timeDetectionAlgorithm(imu_timestamp, 50))
                 {
                     imuDetect = false;
 
