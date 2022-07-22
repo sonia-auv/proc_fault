@@ -39,7 +39,7 @@ namespace proc_fault
                 dvl_timestamp = CommonSoftware::getCurrentTimeMs();
             }
 
-            void imuCallback(const sonia_common::BodyVelocityDVL &receivedData)
+            void imuCallback(const sensor_msgs::Imu &receivedData)
             {   
                 imu_timestamp = CommonSoftware::getCurrentTimeMs();
             }
@@ -138,7 +138,7 @@ namespace proc_fault
             }
 
             std::chrono::milliseconds dvl_timestamp;
-            std::chrono::milliseconds dvl_timestamp;
+            std::chrono::milliseconds imu_timestamp;
 
             std::mutex dvlMutex;
             
@@ -148,6 +148,7 @@ namespace proc_fault
             bool monitoringThreadRunning;
 
             ros::Subscriber dvlVelocity_subscriber;
+            ros::Subscriber imuInfo_subscriber;
             
             ros::Publisher faultWarning_publisher;
     };
