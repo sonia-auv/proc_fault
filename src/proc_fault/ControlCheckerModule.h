@@ -15,7 +15,8 @@ namespace proc_fault
         public:
             ControlCheckerModule()
             {
-                dvlVelocity_subscriber = ros::NodeHandle("~").subscribe("/provider_dvl/dvl_velocity", 10, &ControlCheckerModule::dvlFeedback, this);
+                imuInfo_subscriber = ros::NodeHandle("~").subscribe("/provider_imu/imu_info", 10, &ControlCheckerModule::imuCallback, this);
+                dvlVelocity_subscriber = ros::NodeHandle("~").subscribe("/provider_dvl/dvl_velocity", 10, &ControlCheckerModule::dvlCallback, this);
                 faultWarning_publisher = ros::NodeHandle("~").advertise<sonia_common::FaultWarning>("/proc_fault/control_checker_fault_warning", 10);
 
                 monitorThread = std::thread(std::bind(&ControlCheckerModule::monitoringThreadCallback, this));
@@ -27,7 +28,7 @@ namespace proc_fault
                 monitoringThreadRunning = false;
             }
 
-            void dvlFeedback(const sonia_common::BodyVelocityDVL &receivedData)
+            void dvlCallback(const sonia_common::BodyVelocityDVL &receivedData)
             {   
                 std::unique_lock<std::mutex> mlock(dvlMutex, std::defer_lock);
                 if(mlock.try_lock() == true)
@@ -36,6 +37,11 @@ namespace proc_fault
                     mlock.unlock();
                 }
                 dvl_timestamp = CommonSoftware::getCurrentTimeMs();
+            }
+
+            void imuCallback(const sonia_common::BodyVelocityDVL &receivedData)
+            {   
+                imu_timestamp = CommonSoftware::getCurrentTimeMs();
             }
 
             void monitoringThreadCallback()
@@ -55,15 +61,16 @@ namespace proc_fault
                 std::unique_lock<std::mutex> mlock(dvlMutex);
                 bool dvlMessageDetect = true;
                 bool dvlBadMessage = true;
+                bool imuDetect = true;
 
-                if(timeDetectionAlgorithm(dvl_timestamp, 67))
+                if(timeDetectionAlgorithm(dvl_timestamp, 200))
                 {
                     dvlMessageDetect = false;
 
                     sonia_common::FaultWarning msg;
                     msg.Module = "DVL";
                     msg.Severity = sonia_common::FaultWarning::Error;
-                    msg.Msg = "Dvl does not send data at 20 hz";
+                    msg.Msg = "Dvl does not send data at minimum 5 hz";
 
                     faultWarning_publisher.publish(msg);
                 }
@@ -89,6 +96,28 @@ namespace proc_fault
 
                     faultWarning_publisher.publish(msg);
                 }
+
+                if(timeDetectionAlgorithm(imu_timestamp, 25))
+                {
+                    imuDetect = false;
+
+                    sonia_common::FaultWarning msg;
+                    msg.Module = "IMU";
+                    msg.Severity = sonia_common::FaultWarning::Error;
+                    msg.Msg = "IMU does not send data at minimum 40 hz";
+
+                    faultWarning_publisher.publish(msg);
+                }
+
+                if(imuDetect)
+                {
+                    sonia_common::FaultWarning msg;
+                    msg.Module = "IMU";
+                    msg.Severity = sonia_common::FaultWarning::AllGood;
+                    msg.Msg = "";
+
+                    faultWarning_publisher.publish(msg);
+                }
             }
 
             bool checkMonitoring() { return true; }
@@ -108,6 +137,7 @@ namespace proc_fault
                 return true;
             }
 
+            std::chrono::milliseconds dvl_timestamp;
             std::chrono::milliseconds dvl_timestamp;
 
             std::mutex dvlMutex;
