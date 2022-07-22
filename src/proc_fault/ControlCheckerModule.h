@@ -35,11 +35,12 @@ namespace proc_fault
                     lastDvlVelocityMessage = receivedData;
                     mlock.unlock();
                 }
+                dvl_timestamp = CommonSoftware::getCurrentTimeMs();
             }
 
             void monitoringThreadCallback()
             {
-                ROS_INFO("MotorRestartModule Started \n");
+                ROS_INFO("ControlCheckerModule Started \n");
 
                 while(monitoringThreadRunning)
                 {
@@ -52,14 +53,39 @@ namespace proc_fault
             void monitor()
             {
                 std::unique_lock<std::mutex> mlock(dvlMutex);
+                bool dvlMessageDetect = true;
+                bool dvlBadMessage = true;
 
-
-                if(lastDvlVelocityMessage.xVelBtm == -32.0 && lastDvlVelocityMessage.yVelBtm == -32.0 && lastDvlVelocityMessage.zVelBtm == -32.0 && lastDvlVelocityMessage.eVelBtm == -32.0)
+                if(timeDetectionAlgorithm(dvl_timestamp, 67))
                 {
+                    dvlMessageDetect = false;
+
+                    sonia_common::FaultWarning msg;
+                    msg.Module = "DVL";
+                    msg.Severity = sonia_common::FaultWarning::Error;
+                    msg.Msg = "Dvl does not send data at 20 hz";
+
+                    faultWarning_publisher.publish(msg);
+                }
+
+
+                if(dvlMessageDetect && lastDvlVelocityMessage.xVelBtm == -32.0 && lastDvlVelocityMessage.yVelBtm == -32.0 && lastDvlVelocityMessage.zVelBtm == -32.0 && lastDvlVelocityMessage.eVelBtm == -32.0)
+                {
+                    dvlBadMessage = false;
                     sonia_common::FaultWarning msg;
                     msg.Module = "DVL";
                     msg.Severity = sonia_common::FaultWarning::Warning;
                     msg.Msg = "Dvl encountered -32 data";
+
+                    faultWarning_publisher.publish(msg);
+                }
+
+                if(dvlBadMessage && dvlMessageDetect)
+                {
+                    sonia_common::FaultWarning msg;
+                    msg.Module = "DVL";
+                    msg.Severity = sonia_common::FaultWarning::AllGood;
+                    msg.Msg = "";
 
                     faultWarning_publisher.publish(msg);
                 }
@@ -71,8 +97,20 @@ namespace proc_fault
         
         private:
 
+            bool timeDetectionAlgorithm(std::chrono::milliseconds lastTimestamp, unsigned int MaxMs)
+            {
+                unsigned int diffTimestamp = (CommonSoftware::getCurrentTimeMs() - lastTimestamp).count();
+                if(diffTimestamp > MaxMs)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            std::chrono::milliseconds dvl_timestamp;
+
             std::mutex dvlMutex;
-            
             
             sonia_common::BodyVelocityDVL lastDvlVelocityMessage;
 
