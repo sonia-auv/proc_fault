@@ -15,12 +15,14 @@ namespace proc_fault
         public:
             ControlCheckerModule()
             {
-                imuInfo_subscriber = ros::NodeHandle("~").subscribe("/provider_imu/imu_info", 10, &ControlCheckerModule::imuCallback, this);
-                dvlVelocity_subscriber = ros::NodeHandle("~").subscribe("/provider_dvl/dvl_velocity", 10, &ControlCheckerModule::dvlCallback, this);
+                imuInfo_subscriber = ros::NodeHandle("~").subscribe("/provider_imu/imu_info", 1, &ControlCheckerModule::imuCallback, this);
+                dvlVelocity_subscriber = ros::NodeHandle("~").subscribe("/provider_dvl/dvl_velocity", 1, &ControlCheckerModule::dvlCallback, this);
                 faultWarning_publisher = ros::NodeHandle("~").advertise<sonia_common::FaultWarning>("/proc_fault/control_checker_fault_warning", 10);
 
                 monitorThread = std::thread(std::bind(&ControlCheckerModule::monitoringThreadCallback, this));
                 monitoringThreadRunning = true;
+
+                auv = std::getenv("AUV");
             }
 
             ~ControlCheckerModule()
@@ -109,6 +111,42 @@ namespace proc_fault
                     faultWarning_publisher.publish(msg);
                 }
 
+                if (strcmp(auv.c_str(), "AUV8") == 0){
+                    if(dvlMessageDetect && lastDvlVelocityMessage.xVelBtm == -32.0 && lastDvlVelocityMessage.yVelBtm == -32.0 && lastDvlVelocityMessage.zVelBtm == -32.0 && lastDvlVelocityMessage.eVelBtm == -32.0)
+                    {
+                        dvlBadMessage = false;
+                        sonia_common::FaultWarning msg;
+                        msg.Module = "DVL";
+                        msg.Severity = sonia_common::FaultWarning::Warning;
+                        msg.Msg = "Dvl encountered -32.0 data";
+
+                        faultWarning_publisher.publish(msg);
+                    }
+                }
+
+                if (strcmp(auv.c_str(), "AUV7") == 0){
+                    if(dvlMessageDetect && lastDvlVelocityMessage.xVelBtm == 0.0 && lastDvlVelocityMessage.yVelBtm == 0.0 && lastDvlVelocityMessage.zVelBtm == 0.0 && lastDvlVelocityMessage.eVelBtm == 0.0)
+                    {
+                        dvlBadMessage = false;
+                        sonia_common::FaultWarning msg;
+                        msg.Module = "DVL";
+                        msg.Severity = sonia_common::FaultWarning::Warning;
+                        msg.Msg = "Dvl encountered 0.0 data";
+
+                        faultWarning_publisher.publish(msg);
+                    }
+                }
+
+                if(dvlBadMessage && dvlMessageDetect)
+                {
+                    sonia_common::FaultWarning msg;
+                    msg.Module = "DVL";
+                    msg.Severity = sonia_common::FaultWarning::AllGood;
+                    msg.Msg = "";
+
+                    faultWarning_publisher.publish(msg);
+                }
+
                 if(imuDetect)
                 {
                     sonia_common::FaultWarning msg;
@@ -136,6 +174,8 @@ namespace proc_fault
 
                 return true;
             }
+
+            std::string auv; 
 
             std::chrono::milliseconds dvl_timestamp;
             std::chrono::milliseconds imu_timestamp;
