@@ -12,9 +12,11 @@
 #include "SoftwareImpl.h"
 #include "HardwareImpl.h"
 
-#include "Module.h"
+#include "MissionCheckerModule.h"
+#include "ControlCheckerModule.h"
 #include "ModuleInterface.h"
 #include "MotorRestartModule.h"
+
 
 namespace proc_fault
 {
@@ -37,6 +39,11 @@ namespace proc_fault
         if(Configuration::getInstance()->enableMotorResetModule)
         {
             procFaultModule["MotorRestartModule"] = new MotorRestartModule();
+        }
+
+        if(Configuration::getInstance()->enableControlCheckerModule)
+        {
+            procFaultModule["ControlCheckerModule"] = new ControlCheckerModule();
         }
     }
 
@@ -81,7 +88,7 @@ namespace proc_fault
             navigationHardwareInterface.push_back(new BoardEsc(&rs485Publisher, sonia_common::SendRS485Msg::SLAVE_ESC, "Board Esc", Configuration::getInstance()->boardEscTimestampsMs));
         }
 
-        procFaultModule[NavigationName] = new Module(NavigationName, navigationSoftwareInterface, navigationHardwareInterface);
+        procFaultModule[NavigationName] = new MissionCheckerModule(NavigationName, navigationSoftwareInterface, navigationHardwareInterface);
     }
 
     void ProcFaultNode::initVision()
@@ -104,7 +111,7 @@ namespace proc_fault
             visionSoftwareInterface.push_back(new ProcDetection());
         }
 
-        procFaultModule[VisionName] = new Module(VisionName, visionSoftwareInterface, visionHardwareInterface);
+        procFaultModule[VisionName] = new MissionCheckerModule(VisionName, visionSoftwareInterface, visionHardwareInterface);
     }
 
     void ProcFaultNode::initMapping()
@@ -122,7 +129,7 @@ namespace proc_fault
             //mappingSoftwareInterface.push_back(new ProcMapping());
         }
 
-        procFaultModule[MappingName] = new Module(MappingName, mappingSoftwareInterface, mappingHardwareInterface);
+        procFaultModule[MappingName] = new MissionCheckerModule(MappingName, mappingSoftwareInterface, mappingHardwareInterface);
     }
 
     void ProcFaultNode::initHydro()
@@ -140,7 +147,7 @@ namespace proc_fault
             hydroSoftwareInterface.push_back(new ProcHydrophone());
         }
 
-        procFaultModule[HydroName] = new Module(HydroName, hydroSoftwareInterface, hydroHardwareInterface);
+        procFaultModule[HydroName] = new MissionCheckerModule(HydroName, hydroSoftwareInterface, hydroHardwareInterface);
     }
 
     void ProcFaultNode::initIo()
@@ -163,7 +170,7 @@ namespace proc_fault
             ioHardwareInterface.push_back(new BoardKillMission(&rs485Publisher, sonia_common::SendRS485Msg::SLAVE_IO, "Io Board", Configuration::getInstance()->boardIoTimestampsMs));
         }
 
-        procFaultModule[IoName] = new Module(IoName, ioSoftwareInterface, ioHardwareInterface);
+        procFaultModule[IoName] = new MissionCheckerModule(IoName, ioSoftwareInterface, ioHardwareInterface);
     }
 
     void ProcFaultNode::initUnderwaterCom()
@@ -176,7 +183,7 @@ namespace proc_fault
             underwaterComSoftwareInterface.push_back(new ProviderCom());
         }
         
-        procFaultModule[UnderwaterName] = new Module(UnderwaterName, underwaterComSoftwareInterface, underwaterComHardwareInterface);
+        procFaultModule[UnderwaterName] = new MissionCheckerModule(UnderwaterName, underwaterComSoftwareInterface, underwaterComHardwareInterface);
     }
 
     void ProcFaultNode::initPower()
@@ -199,7 +206,7 @@ namespace proc_fault
             powerHardwareInterface.push_back(new BoardPowerSupply(&rs485Publisher, sonia_common::SendRS485Msg::SLAVE_PWR_MANAGEMENT, "Power Supply", Configuration::getInstance()->boardPowerSupplyTimestampsMs));
         }
         
-        procFaultModule[PowerName] = new Module(PowerName, powerSoftwareInterface, powerHardwareInterface);
+        procFaultModule[PowerName] = new MissionCheckerModule(PowerName, powerSoftwareInterface, powerHardwareInterface);
     }
 
     void ProcFaultNode::initInternalCom()
@@ -217,7 +224,7 @@ namespace proc_fault
             internalComHardwareInterface.push_back(new BoardKillMission(&rs485Publisher, sonia_common::SendRS485Msg::SLAVE_KILLMISSION, "Kill Mission Switch", Configuration::getInstance()->boardKillMissionTimestampsMs));
         }
         
-        procFaultModule[InternalName] = new Module(InternalName, internalComSoftwareInterface, internalComHardwareInterface);
+        procFaultModule[InternalName] = new MissionCheckerModule(InternalName, internalComSoftwareInterface, internalComHardwareInterface);
     }
 
     void ProcFaultNode::rs485Callback(const sonia_common::SendRS485Msg &receivedData)

@@ -57,5 +57,7 @@
 
 /proc_fault/motor_reset_module/enable: true
 
+/proc_fault/control_checker_module/enable: true
+
 /proc_fault/initial_node_sleep_second: 30
 /proc_fault/loop_sleep_time_second: 1
