@@ -34,7 +34,7 @@ namespace proc_fault
             {
                 if(newError)
                 {
-                    ROS_ERROR("Hardware: %s encountered an error", getName().c_str());
+                    ROS_ERROR("Hardware: %s stop receiving keep alive", getName().c_str());
                     newError = false;
                 }
             }
