@@ -29,7 +29,7 @@ namespace proc_fault
             {
                 if(newError)
                 {
-                    ROS_ERROR("Software: %s encountered an error", getName().c_str());
+                    ROS_ERROR("Software: %s stopped publishing", getName().c_str());
                     newError = false;
                 }
             }
